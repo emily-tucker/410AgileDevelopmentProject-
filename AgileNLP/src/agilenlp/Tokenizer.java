@@ -35,7 +35,7 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
@@ -58,7 +58,7 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
@@ -77,7 +77,7 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
@@ -96,7 +96,7 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
@@ -115,14 +115,14 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
         return false;
     }
     public static boolean isPreposition(String s){
-        String preopositions = "above, before, except, from, in near, of, since, between, upon, with, to, at, after, on";
+        String preopositions = "above before except from in near of since between upon with to at after on";
         String word = "";
         ArrayList<String> words = new ArrayList<>();
         for(int i = 0; i < preopositions.length(); i++ ){
@@ -134,7 +134,7 @@ public class Tokenizer {
         
         }
         for(String w: words){
-            if(w.equals(s)){
+            if(w.equalsIgnoreCase(s)){
                 return true;
             }
         }
@@ -177,27 +177,27 @@ public static TokenStream lexer(String question)
                 }
                 
                 if (isFirstWord && whWords.contains(word)){ 
-                    System.out.println("wh - word: " + word);
+                    System.out.print("You said, '" + word + "', so I know you are looking for a ");
                     
-                    if("who".equals(word)){
-                        System.out.println("We are looking for a person");
+                    if("Who".equalsIgnoreCase(word)){
+                        System.out.println("person");
 
                     }
                     
-                    if("what".equals(word)){
-                        System.out.println("We are looking for a thing");
+                    if("What".equalsIgnoreCase(word)){
+                        System.out.println("thing");
 
                     }
-                    if("where".equals(word)){
-                        System.out.println("We are looking for a place");
+                    if("Where".equalsIgnoreCase(word)){
+                        System.out.println("place");
 
                     }
-                    if("when".equals(word)){
-                        System.out.println("We are looking for a time");
+                    if("When".equalsIgnoreCase(word)){
+                        System.out.println("time");
 
                     }
-                    if("why".equals(word)){
-                        System.out.println("We are looking for a cause");
+                    if("Why".equalsIgnoreCase(word)){
+                        System.out.println("cause");
 
                         
                     }
