@@ -13,26 +13,21 @@ import java.util.Hashtable;
  * @author bdoyle
  */
 public class CharacterLoader {
-    public ArrayList<Character> CharactersArrayList;
-    public ArrayList<Character> CharactersIDArrayList;
+    public ArrayList<MovieCharacter> CharactersArrayList;
     public Hashtable CharactersHashtable;
     
     public CharacterLoader()
     {
-        CharactersArrayList = new ArrayList();
-        CharactersIDArrayList = new ArrayList();
-        CharactersHashtable = new Hashtable();
+        CharactersArrayList = new ArrayList<MovieCharacter>();
+        CharactersHashtable = new Hashtable<String, MovieCharacter>();
         
     }
 
-    public void Add(Character c)
+    public void Add(MovieCharacter c)
     {
-        if(c.freebase_character_id != "" &&  c.wikipedia_movie_id != "")
+        if(c.freebase_character_id != "" &&  c.wikipedia_movie_id != 0)
         {
-            Character c_id = new Character();
-            c_id.wikipedia_movie_id = c.wikipedia_movie_id;
-            c_id.freebase_character_id = c.freebase_character_id;
-            CharactersIDArrayList.add(c_id);
+            
 
             CharactersArrayList.add(c);
             CharactersHashtable.put(c.freebase_character_id, c);
