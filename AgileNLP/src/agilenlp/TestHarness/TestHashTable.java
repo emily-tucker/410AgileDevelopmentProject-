@@ -9,7 +9,7 @@ package agilenlp.TestHarness;
 import agilenlp.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 
 
 /**
@@ -21,7 +21,8 @@ public class TestHashTable {
     public static void run()
     {
         //Hashtable<Movie, Integer> table = new Hashtable<Movie, Integer>();
-        
+
+        /*
         Hashtable<String, Integer> table = new Hashtable<String, Integer>();
         ArrayList<Movie> movies = DataLoader.GetMovies();
         int i = 0;

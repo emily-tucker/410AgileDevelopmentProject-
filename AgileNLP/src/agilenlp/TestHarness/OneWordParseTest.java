@@ -7,6 +7,7 @@ package agilenlp.TestHarness;
 
 import agilenlp.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class OneWordParseTest {
@@ -21,6 +22,7 @@ public class OneWordParseTest {
     practical to move the prompt later. 
     */
     public static void main(String[] args) {
+        /*
         ArrayList<MovieComposite> selectedMovies = parseOneWord();
         for(MovieComposite m: selectedMovies )
         {
@@ -29,7 +31,7 @@ public class OneWordParseTest {
     }
 
     public static ArrayList<MovieComposite> parseOneWord() {
-        ArrayList<MovieComposite> movies = DataAggregator.GetCompositeMovies();
+        Hashtable movies = DataAggregator.GetCompositeMovies();
         
         Scanner input = new Scanner(System.in);
         System.out.print("Type a keyword to query");
@@ -49,6 +51,6 @@ public class OneWordParseTest {
             }
         }
         return parsedTitles;
-
+                */
     }
 }

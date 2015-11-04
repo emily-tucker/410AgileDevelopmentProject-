@@ -23,30 +23,31 @@ import java.util.Set;
 
 
 public class DataAggregator {
+    @SuppressWarnings("unchecked")
     public static Hashtable GetCompositeMovies()
     {
         
         System.out.println("Starting Data Aggregator: " + new Date());
 
         //get movies
-        Hashtable movies = (Hashtable)DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.movie);
+        Hashtable<Integer, Movie> movies = (Hashtable<Integer, Movie>)DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.movie);
         System.out.println("Loaded Movies Hashtable: " + new Date());
 
         //get plot summaries
-        Hashtable plot_summaries = (Hashtable)DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.plot_summary);
+        Hashtable<Integer, PlotSummary> plot_summaries = (Hashtable<Integer, PlotSummary>)DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.plot_summary);
         System.out.println("Loaded Plot Summaries: " + new Date());
 
-        Hashtable composite_movies = new Hashtable();
+        Hashtable<Integer, MovieComposite> composite_movies = new Hashtable<Integer, MovieComposite>();
 
         //get character loader
         CharacterLoader cl = DataLoader.GetCharacterLoader();
         System.out.println("Loaded Character Loader: " + new Date());
 
 
-        Set<String> movie_keys = movies.keySet();        
+        Set<Integer> movie_keys = movies.keySet();        
         Set<String> character_keys;
         
-        for(String movie_key: movie_keys)
+        for(Integer movie_key: movie_keys)
         {
             MovieComposite mc = new MovieComposite();
 
@@ -77,12 +78,13 @@ public class DataAggregator {
         //get character object out of character hashtable
         //add to movie charachters array
         
-        for(Character c: cl.CharactersArrayList)
+        for(MovieCharacter c: cl.CharactersArrayList)
         {
             MovieComposite mc1 = (MovieComposite)composite_movies.get(c.wikipedia_movie_id);
 
             if(mc1 != null)
             {
+               
                 mc1.characters.add(c);
             }
 

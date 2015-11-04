@@ -11,7 +11,7 @@ DATA EXAMPLE
 package agilenlp;
 
 public class PlotSummary {
-    public String wikipedia_movie_id = "";
+    public int wikipedia_movie_id = 0;
     public String summary = "";
     
         
@@ -22,7 +22,7 @@ public class PlotSummary {
     //genres
         if(string_array.length == 2)
         {
-            wikipedia_movie_id = string_array[0];
+            wikipedia_movie_id = Integer.parseInt(string_array[0]);
             summary = string_array[1];
         }
         
