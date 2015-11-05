@@ -30,8 +30,8 @@ public class Main {
             System.out.println("You asked: " + question);
             System.out.println("");
             TokenStream toks = Tokenizer.tokenizePlot(question);
-
-            Facts database = FactBuilder.glean(toks);
+            toks = Tokenizer.tagger(toks);
+            //Facts database = FactBuilder.glean(toks);
             
             System.out.println("");
             System.out.println("Here is the token stream: ");

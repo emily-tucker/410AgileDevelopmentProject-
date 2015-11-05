@@ -70,5 +70,9 @@ public class TokenStream {
             return tokens.get(here-1);}
         else return Token.EOF;
     }
-    
+    public Token following() {
+        if (here < size) {
+            return tokens.get(here+1);}
+        else return Token.EOF;
+    }
 }
