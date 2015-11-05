@@ -1,15 +1,26 @@
-/*
-PURPOSE:    Object which represents each individual charachter and all fields associated with the charachter
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
 
-NOTES:      THE CHARACHTER CLASS REPRESENTS ALL FIELDS LOADED VIA CHARACTER TSV FILE
-            CONSTRUCTOR TAKES STRING ARRAY WHICH REPRESENTS SINGLE LINE FROM TSV FILE 
-
-DATA EXAMPLE
-975900	/m/03vyhn	2001-08-24	Akooshay	1958-08-26	F	1.62		Wanda De Jesus	42	/m/0bgchxw	/m/0bgcj3x	/m/03wcfv7
+/***************************************************************************
+* CLASS MovieCharacter
+* -----------------------------------
+* Description
+* Object which represents each individual charachter and all fields associated with the character
+* THE CHARACHTER CLASS REPRESENTS ALL FIELDS LOADED VIA CHARACTER TSV FILE
+* CONSTRUCTOR TAKES STRING ARRAY WHICH REPRESENTS SINGLE LINE FROM TSV FILE 
+* DATA EXAMPLE
+* 975900	/m/03vyhn	2001-08-24	Akooshay	1958-08-26	F	1.62		Wanda De Jesus	42
+* **************************************************************************
 */
 
 
-package agilenlp;
+package FileReader;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

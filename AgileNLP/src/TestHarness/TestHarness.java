@@ -10,7 +10,7 @@ PURPOSE:    The Test Harness Objects purpose is to stub out a main method that c
 
 */
 
-package agilenlp.TestHarness;
+package TestHarness;
 
 public class TestHarness {
     public static void main(String[] args) {

@@ -1,20 +1,30 @@
-/*
- * Author: Chris Esterlein
- *
- * Lexer.java
- *
- * Created on November 1, 2015
- *
- */
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
 
-package agilenlp;
-import agilenlp.TokenStream;
-import agilenlp.Token;
+/***************************************************************************
+* CLASS Tokenizer
+* -----------------------------------
+* Description
+* Brakes things into words and pairs them with their type.
+* Brakes a String into words and finds their type to create tokens.
+* The String is the entire question from the user.
+* **************************************************************************
+*/  
+
+package Token;
+import Token.TokenStream;
+import Token.Token;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import agilenlp.TokenType;
+import Token.TokenType;
 
 public class Tokenizer {
     

@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agilenlp.TestHarness;
+package TestHarness;
 
 
-import agilenlp.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 //import com.google.gson.Gson;

@@ -1,16 +1,28 @@
-/*
- *This class contains a word and its type. In this case, our type will be its part of speech
- *This is the same token class used in Data Structures 
- * Author: Prof Peterson
- *
- */
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
 
-package agilenlp;
-import agilenlp.TokenType;
-import static agilenlp.TokenType.*;
+/***************************************************************************
+* CLASS Token
+* -----------------------------------
+* Description
+* A token is a single word.
+* It also categorizes the word by, for example: a noun or a verb.\
+ * This is the same token class used in Data Structures 
+ * Author: Prof Peterson
+* **************************************************************************
+*/
+
+package Token;
+import static Token.TokenType.*;
 public class Token {
-    public TokenType type;
-    public String body;
+    public TokenType type;  // The type of speech - e.g. a verb or a noun
+    public String body; // The word stored as a String
 
     public Token(TokenType type, String body) {
         this.type = type;
