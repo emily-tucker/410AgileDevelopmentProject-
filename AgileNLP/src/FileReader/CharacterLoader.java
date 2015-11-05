@@ -19,7 +19,7 @@ public class CharacterLoader {
     public CharacterLoader()
     {
         CharactersArrayList = new ArrayList<MovieCharacter>();
-        CharactersHashtable = new Hashtable<String, MovieCharacter>();
+        //CharactersHashtable = new Hashtable<String, MovieCharacter>();
         
     }
 
@@ -30,14 +30,14 @@ public class CharacterLoader {
     * Populates the arraylist and hashtable from dataloader
     * **************************************************************************
     */
-    public void Add(MovieCharacter c)
+    protected void Add(MovieCharacter c)
     {
         if(c.freebase_character_id != "" &&  c.wikipedia_movie_id != 0)
         {
             
 
             CharactersArrayList.add(c);
-            CharactersHashtable.put(c.freebase_character_id, c);
+            //CharactersHashtable.put(c.freebase_character_id, c);
         }
     }
 }

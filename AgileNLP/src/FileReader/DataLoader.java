@@ -20,12 +20,12 @@ import java.util.Hashtable;
 
 public class DataLoader {
 
-    public enum DataType {
+    protected enum DataType {
 
         hash_table, array_list
     };
 
-    public enum ObjectType {
+    protected enum ObjectType {
 
         character, movie, name_cluster, plot_summary
     };
@@ -156,7 +156,7 @@ public class DataLoader {
         }
     }
 
-    public static Object GetObjectData(DataType dt, ObjectType ot) {
+    protected static Object GetObjectData(DataType dt, ObjectType ot) {
         String s_plot_summary_path = "/resources/plot_summaries.txt";
         String s_movie_path = "/resources/movie.metadata.tsv";
         String s_character_path = "/resources/character.metadata.tsv";
@@ -204,7 +204,7 @@ public class DataLoader {
      * movie objects
      * **************************************************************************
      */
-    public static ArrayList GetMovies() {
+    protected static ArrayList GetMovies() {
         return (ArrayList) GetObjectData(DataType.array_list, ObjectType.movie);
     }
 
@@ -217,7 +217,7 @@ public class DataLoader {
      *     
 * **************************************************************************
      */
-    public static ArrayList GetPlotSummaries() {
+    protected static ArrayList GetPlotSummaries() {
         return (ArrayList) GetObjectData(DataType.array_list, ObjectType.plot_summary);
     }
 
@@ -229,11 +229,11 @@ public class DataLoader {
      * 
      * **************************************************************************
      */
-    public static ArrayList GetCharacters() {
+    protected static ArrayList GetCharacters() {
         return (ArrayList) GetObjectData(DataType.array_list, ObjectType.character);
     }
 
-    public static CharacterLoader GetCharacterLoader() {
+    protected static CharacterLoader GetCharacterLoader() {
         try {
             CharacterLoader cl = new CharacterLoader();
             String read_line = "";
@@ -274,7 +274,7 @@ public class DataLoader {
      *     
 * **************************************************************************
      */
-    public static ArrayList GetNameClusters() {
+    protected static ArrayList GetNameClusters() {
         return (ArrayList) GetObjectData(DataType.array_list, ObjectType.name_cluster);
     }
 }
