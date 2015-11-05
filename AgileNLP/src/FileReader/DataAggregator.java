@@ -1,17 +1,33 @@
-/*
- PURPOSE:    DataAggregator is going to load all the data and then merge the data together into a single
- Entity that can be used for searching.
- Thinking about the idea of hashing at this juncture as well, but need to give that some thought.
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
 
- The idea behind it is movie will be merged with plot summary, and perhaps a list of character names for the movie, genres, etc.  
- So one object will contain ALL data merged together.
-            
- The dataagregator will be responsible for this.
- The entity MovieComposite will be the object that contains all this data together.
-
- Lastly, the idea is that our main program will call into DataAggregator, return an array of MovieComposite objects.
- DataAggregator will call each loader function from DataLoader, and do it's magic munging together.
- */
+/***************************************************************************
+* CLASS DataAggregator
+* -----------------------------------
+* Description
+* ------------------------------------
+* DataAggregator is going to load all the data and then merge the data together into a single
+* Entity that can be used for searching.
+* Thinking about the idea of hashing at this juncture as well, but need to give that some thought.
+* -------------------------------------------------------------------------------------------------
+* PURPOSE
+* -------------------------------------------------------------------------------------------------
+* The idea behind it is movie will be merged with plot summary, and perhaps a list of character names for the movie, genres, etc.  
+* So one object will contain ALL data merged together.
+*            
+* The DataAggregator will be responsible for this.
+* The entity MovieComposite will be the object that contains all this data together.
+*
+* Lastly, the idea is that our main program will call into DataAggregator, return an array of MovieComposite objects.
+* DataAggregator will call each loader function from DataLoader, and do it's magic munging together.
+* **************************************************************************
+*/  
 package FileReader;
 
 import java.util.Date;
@@ -19,16 +35,15 @@ import java.util.Hashtable;
 import java.util.Set;
 
 public class DataAggregator {
-
-    /**
-     * *************************************************************************
-     * GetCompositeMovies() ----------------------------------- Description This
-     * returns a hashtable of composite movie objects The composite movie
-     * objects allow us to group character into movies It also the plot summary
-     * with the movie name and ID
-     * **************************************************************************
-     * @return
-     */
+    
+    /***************************************************************************
+    * GetCompositeMovies()
+    * -----------------------------------
+    * returns a hashtable of composite movie objects The composite movie
+    * objects allow us to group character into movies It also the plot summary
+    * with the movie name and ID
+    * **************************************************************************
+    */  
     @SuppressWarnings("unchecked")
     public static Hashtable GetCompositeMovies() {
 
