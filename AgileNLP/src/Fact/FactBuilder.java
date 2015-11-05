@@ -5,17 +5,7 @@
  */
 package Fact;
 import Token.*;
-import static Token.Tokenizer.isAdjective;
-import static Token.Tokenizer.isAdverb;
-import static Token.Tokenizer.isArticle;
-import static Token.Tokenizer.isConjection;
-import static Token.Tokenizer.isGerund;
-import static Token.Tokenizer.isPreposition;
-import static Token.Tokenizer.isProNoun;
-import static Token.Tokenizer.isProperNoun;
-import static Token.Tokenizer.isVerb;
-import static Token.Tokenizer.isWhWord;
-import static Token.Tokenizer.isYesNo;
+import static Token.Tokenizer.*;
 import java.io.BufferedReader;
 
 import java.io.IOException;
