@@ -15,9 +15,18 @@ public class Facts {
     
     ArrayList<Fact> facts;
     
-    public Facts(){}
+    public Facts(){
+        facts = new ArrayList<>();
+    }
     
     public void addFact(Fact f){
         facts.add(f);
+    }
+    public String toString(){
+        String out = "";
+        for(Fact f: facts){
+            out += f.toString();
+        } 
+        return out;
     }
 }

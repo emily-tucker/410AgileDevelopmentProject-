@@ -1,6 +1,8 @@
 
 package Main;
 
+import Fact.FactBuilder;
+import Fact.Facts;
 import resources.MrMovieLogo;
 import Token.Tokenizer;
 import Token.Token;
@@ -29,14 +31,18 @@ public class Main {
             System.out.println("");
             TokenStream toks = Tokenizer.tokenizePlot(question);
 
-            Token t;
+            Facts database = FactBuilder.glean(toks);
+            
             System.out.println("");
             System.out.println("Here is the token stream: ");
-
+            
+            Token t;
             while ((t = toks.next()) != Token.EOF) {
                 System.out.println(" " + t + "   (" + t.type + ")");
             }
             System.out.println("");
+            System.out.println("Here are the facts you produced: ");
+            //System.out.println(database);
             System.out.println("Would you like to ask another? Y/N");
             if(kybd.nextLine().contains("N")){
                 askAnother = false;

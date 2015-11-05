@@ -31,5 +31,8 @@ public class Fact {
             return factoid[2];
         return factoid[0];
     }
+    public String toString(){
+        return "" +factoid[0]+ " " + factoid[2] + " " + factoid[3] + "\n";
     
+    }
 }

@@ -31,21 +31,14 @@ public class Tokenizer {
     */
     public static boolean isProNoun(String s){
         String pronouns = "I you he she we it they us them me her him myself himself themselves mine ours yours who whom";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < pronouns.length(); i++ ){
-            if(Character.isWhitespace(pronouns.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += pronouns.charAt(i);}
+        String [] words = pronouns.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
-        }
+        }//for
+            
         return false;
     }
     public static boolean isProperNoun(String s){
@@ -54,58 +47,42 @@ public class Tokenizer {
     public static boolean isAdjective(String s){
         //this is clearly not right btw
         String adjective = "what red orange yellow green blue purple";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < adjective.length(); i++ ){
-            if(Character.isWhitespace(adjective.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += adjective.charAt(i);}
+        String [] words = adjective.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
-        }
+        }//for
+            
         return false;
     }
     public static boolean isConjection(String s){
         String conjunction = "and but or neither nor either";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < conjunction.length(); i++ ){
-            if(Character.isWhitespace(conjunction.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += conjunction.charAt(i);}
+        String [] words = conjunction.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
-        }
+        }//for
+            
         return false;
     }
     public static boolean isVerb(String s){
         String verb = "'s was is has does did have had";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < verb.length(); i++ ){
-            if(Character.isWhitespace(verb.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += verb.charAt(i);}
+        String [] words = verb.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
+        }//for
+        if(s.length()>3 && s.charAt(s.length()-1) == 's'){
+            return true;
+        } 
+        if(s.length()>3 &&s.substring(s.length()-2, s.length()) == "ed"){
+            return true;
         }
         return false;
     }
@@ -117,41 +94,27 @@ public class Tokenizer {
     }
     public static boolean isArticle(String s){
         String articles = "the a an";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < articles.length(); i++ ){
-            if(Character.isWhitespace(articles.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += articles.charAt(i);}
+        String [] words = articles.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
-        }
+        }//for
+            
         return false;
     }
     
     public static boolean isPreposition(String s){
         String preopositions = "above before except from in near of since for between upon with to at after on";
-        String word = "";
-        ArrayList<String> words = new ArrayList<>();
-        for(int i = 0; i < preopositions.length(); i++ ){
-            if(Character.isWhitespace(preopositions.charAt(i))){
-                words.add(word);
-                word = "";
-            }
-            else{word += preopositions.charAt(i);}
+        String [] words = preopositions.split(" ");
         
-        }
-        for(String w: words){
-            if(w.equalsIgnoreCase(s)){
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
                 return true;
             }
-        }
+        }//for
+            
         return false;
     }
     public static boolean isWhWord(String s){
@@ -388,6 +351,7 @@ public static TokenStream lexer(String question){
                     } else {
                         System.out.print("Invalid character " + ch + " in " + line);
                         errs++;
+                        col++;
                     }
                 }
                 
