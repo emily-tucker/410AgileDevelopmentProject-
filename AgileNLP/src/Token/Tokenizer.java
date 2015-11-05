@@ -7,14 +7,14 @@
  *
  */
 
-package agilenlp;
-import agilenlp.TokenStream;
-import agilenlp.Token;
+package Token;
+import Token.TokenStream;
+import Token.Token;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import agilenlp.TokenType;
+import Token.TokenType;
 
 public class Tokenizer {
     

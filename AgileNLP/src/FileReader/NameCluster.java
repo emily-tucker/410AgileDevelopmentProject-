@@ -10,7 +10,7 @@ Elizabeth Swann	/m/0k1xxy
 */
 
 
-package agilenlp;
+package FileReader;
 
 public class NameCluster {
     public String character_name = "";

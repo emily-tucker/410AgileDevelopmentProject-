@@ -8,7 +8,7 @@
  * 
  */
 
-package agilenlp;
+package Token;
 
 /**
  *

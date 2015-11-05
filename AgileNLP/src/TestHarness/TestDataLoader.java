@@ -3,9 +3,9 @@ PURPOSE:    UnitTest for the DataLoader
 */
 
 
-package agilenlp.TestHarness;
+package TestHarness;
 
-import agilenlp.DataLoader;
+import FileReader.DataLoader;
 import java.util.ArrayList;
 import java.util.Date;
 

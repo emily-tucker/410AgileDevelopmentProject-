@@ -14,7 +14,7 @@ PURPOSE:    DataAggregator is going to load all the data and then merge the data
 */
 
 
-package agilenlp;
+package FileReader;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,6 +23,16 @@ import java.util.Set;
 
 
 public class DataAggregator {
+    
+    /***************************************************************************
+    * GetCompositeMovies()
+    * -----------------------------------
+    * Description
+    * This returns a hashtable of composite movie objects 
+    * The composite movie objects allow us to group character into movies
+    * It also the plot summary with the movie name and ID
+    * **************************************************************************
+    */
     @SuppressWarnings("unchecked")
     public static Hashtable GetCompositeMovies()
     {
@@ -44,17 +54,18 @@ public class DataAggregator {
         System.out.println("Loaded Character Loader: " + new Date());
 
 
-        Set<Integer> movie_keys = movies.keySet();        
-        Set<String> character_keys;
+        Set<Integer> movie_keys = movies.keySet();  // movie key set  
+        Set<String> character_keys; // character key set
+        
         
         for(Integer movie_key: movie_keys)
         {
             MovieComposite mc = new MovieComposite();
-
-            Movie m = (Movie)movies.get(movie_key);
-            mc.movie = m;
             
-
+            Movie m = (Movie)movies.get(movie_key);
+            mc.movie = m;   // Assigns the movie object
+            
+            // This block will assign the plot summary portion
             if(plot_summaries.containsKey(m.wikipedia_movie_id))
             {
                 PlotSummary ps = (PlotSummary)plot_summaries.get(m.wikipedia_movie_id);
@@ -78,6 +89,7 @@ public class DataAggregator {
         //get character object out of character hashtable
         //add to movie charachters array
         
+        // This loop adds all the characters of a movie into an object to group them
         for(MovieCharacter c: cl.CharactersArrayList)
         {
             MovieComposite mc1 = (MovieComposite)composite_movies.get(c.wikipedia_movie_id);

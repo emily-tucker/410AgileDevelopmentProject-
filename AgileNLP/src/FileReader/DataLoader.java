@@ -7,7 +7,7 @@
  into an array list of entities, the array list is returned.
 
  */
-package agilenlp;
+package FileReader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

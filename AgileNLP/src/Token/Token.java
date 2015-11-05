@@ -5,9 +5,9 @@
  *
  */
 
-package agilenlp;
-import agilenlp.TokenType;
-import static agilenlp.TokenType.*;
+package Token;
+import Token.TokenType;
+import static Token.TokenType.*;
 public class Token {
     public TokenType type;
     public String body;

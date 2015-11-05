@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package agilenlp.TestHarness;
+package TestHarness;
 
-import agilenlp.DataAggregator;
+import FileReader.DataAggregator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -22,6 +22,8 @@ public class TestDataAggregator {
 
         start_time = new Date();
         System.out.println("Start Time: " + start_time);
+        
+        // This gets the composite movie object
         Hashtable composite_movies = DataAggregator.GetCompositeMovies();
         end_time = new Date();
 

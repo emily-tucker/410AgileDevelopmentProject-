@@ -8,7 +8,7 @@ DATA EXAMPLE
 */
 
 
-package agilenlp;
+package FileReader;
 
 public class PlotSummary {
     public int wikipedia_movie_id = 0;

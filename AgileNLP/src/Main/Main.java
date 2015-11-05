@@ -1,6 +1,9 @@
 
-package agilenlp;
+package Main;
 
+import Token.Tokenizer;
+import Token.Token;
+import Token.TokenStream;
 import java.util.Scanner;
 
 

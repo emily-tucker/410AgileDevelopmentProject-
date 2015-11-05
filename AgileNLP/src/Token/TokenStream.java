@@ -8,8 +8,8 @@
  *
  */
 
-package agilenlp;
-import agilenlp.Token;
+package Token;
+import Token.Token;
 import java.util.ArrayList;
 public class TokenStream {
     public ArrayList<Token> tokens;

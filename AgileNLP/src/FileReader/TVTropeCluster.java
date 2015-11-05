@@ -1,6 +1,6 @@
 //NOT SURE IF THIS DATA ENTITY IS GOING TO BE REQUIRED?
 
-package agilenlp;
+package FileReader;
 
 public class TVTropeCluster {
     

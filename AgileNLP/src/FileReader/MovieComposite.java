@@ -3,7 +3,7 @@ PURPOSE:    Movie composite will be an object which represents all movie, charac
             Single data entity.  Probably going to hash all of the values together as well, so that searching can easily be performed.
 */
 
-package agilenlp;
+package FileReader;
 
 import java.util.ArrayList;
 
