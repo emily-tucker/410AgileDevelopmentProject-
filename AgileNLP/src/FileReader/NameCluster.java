@@ -8,7 +8,7 @@
 */  
 
 /***************************************************************************
-* function(param 1, param 2)
+* CLASS NameCluster
 * -----------------------------------
 * Description
 PURPOSE:    Object which represents each individual name cluster and the two fields associated with the name cluster.  
