@@ -1,11 +1,3 @@
-
-package FileReader;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /***************************************************************************
 * function(param 1, param 2)
 * -----------------------------------
@@ -13,7 +5,15 @@ import java.util.Locale;
 * What this function does
 * Continued
 * **************************************************************************
-*/  
+*/
+
+
+package FileReader;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /***************************************************************************
 * CLASS Movie

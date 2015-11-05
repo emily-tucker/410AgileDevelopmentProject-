@@ -1,11 +1,3 @@
-package FileReader;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Hashtable;
 
 /***************************************************************************
 * function(param 1, param 2)
@@ -14,7 +6,16 @@ import java.util.Hashtable;
 * What this function does
 * Continued
 * **************************************************************************
-*/  
+*/
+
+package FileReader;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 /***************************************************************************
 * CLASS DataLoader

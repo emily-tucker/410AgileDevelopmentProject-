@@ -5,7 +5,13 @@
 * What this function does
 * Continued
 * **************************************************************************
-*/  
+*/
+
+package FileReader;
+
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.Set;
 
 /***************************************************************************
 * CLASS DataAggregator
@@ -28,11 +34,6 @@
 * DataAggregator will call each loader function from DataLoader, and do it's magic munging together.
 * **************************************************************************
 */  
-package FileReader;
-
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.Set;
 
 public class DataAggregator {
     
