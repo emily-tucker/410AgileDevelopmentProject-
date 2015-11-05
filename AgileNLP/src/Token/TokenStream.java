@@ -1,16 +1,25 @@
-/*This class holds a bunch of tokens in an array list and provides some additional functionality including peek(), and next() which it does by keeping track of what token is currently being acted on
- *This is the same tokenStream we used in 280 
- *Author: Prof Peterson
- *
- * TokenStream.java
- *
- * Created on November 13, 2007, 9:39 PM
- *
- */
-
 package Token;
 import Token.Token;
 import java.util.ArrayList;
+
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
+
+/***************************************************************************
+* TokenStream
+* -----------------------------------
+* Description
+* This class holds a bunch of tokens in an array list and provides some additional functionality including peek(), and next() which it does by keeping track of what token is currently being acted on
+* This is the same tokenStream we used in 280 
+* **************************************************************************
+*/  
+
 public class TokenStream {
     public ArrayList<Token> tokens;
     public int here;
