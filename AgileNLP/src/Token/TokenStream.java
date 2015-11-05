@@ -1,5 +1,4 @@
 package Token;
-import Token.Token;
 import java.util.ArrayList;
 
 /***************************************************************************
