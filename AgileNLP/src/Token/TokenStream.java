@@ -21,9 +21,10 @@ import java.util.ArrayList;
 */  
 
 public class TokenStream {
-    public ArrayList<Token> tokens;
-    public int here;
-    public int size;
+    public ArrayList<Token> tokens; // The ArrayList of Tokens
+    public int here;    // The index in the ArrayList
+    public int size;    // Size of the Arraylist
+    
     public TokenStream() {
         tokens = new ArrayList<Token>();
         here = 0;
@@ -33,6 +34,15 @@ public class TokenStream {
         tokens.add(size, t);
         size++;
     }
+    
+    /***************************************************************************
+    * next()
+    * -----------------------------------
+    * Description
+    * This will MOVE to the next token in the arraylist
+    * This is destructive so do NOT call it until you want to move to the next token
+    * **************************************************************************
+    */  
     public Token next() {
         if (here < size) {
             Token res = tokens.get(here);
@@ -41,6 +51,15 @@ public class TokenStream {
         }
         return Token.EOF;
     }
+    
+    /***************************************************************************
+    * peek()
+    * -----------------------------------
+    * Description
+    * This will peek at the next Token in the arraylist
+    * This is NON-Destructive
+    * **************************************************************************
+    */  
         public Token peek() {
         if (here < size) {
             return tokens.get(here);}
