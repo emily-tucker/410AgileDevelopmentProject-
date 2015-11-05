@@ -22,8 +22,8 @@ package FileReader;
 import java.util.ArrayList;
 
 public class MovieComposite {
-    public Movie movie;
-    public PlotSummary plot_summary;
+    public Movie movie =  new Movie();
+    public PlotSummary plot_summary = new PlotSummary();
     public ArrayList characters = new ArrayList();
 
 }

@@ -31,7 +31,7 @@ public class OneWordParseTest {
 
         Hashtable movieList = DataAggregator.GetCompositeMovies();
 
-        String initial = "star";
+        String initial = "yoda";
         String query = initial.toLowerCase();
 
         boolean found = false;
@@ -42,17 +42,17 @@ public class OneWordParseTest {
                 found(cm);
                 found = true;
             }
-//            if (cm.plot_summary.summary.toLowerCase().contains(query)) {
-//                found(cm);
-//                found = true;
-//            }
-//            for (Object o : cm.characters) {
-//                MovieCharacter c = (MovieCharacter) o;
-//                if (c.character_name.toLowerCase().contains(query)) {
-//                    found(cm);
-//                    break;
-//                }
-//            }
+            if (cm.plot_summary.summary.toLowerCase().contains(query)) {
+                found(cm);
+                found = true;
+            }
+            for (Object o : cm.characters) {
+                MovieCharacter c = (MovieCharacter) o;
+                if (c.character_name.toLowerCase().contains(query)) {
+                    found(cm);
+                    break;
+                }
+            }
             if (found) {
                 break;
             }
