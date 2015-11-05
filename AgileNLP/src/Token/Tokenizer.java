@@ -78,12 +78,12 @@ public class Tokenizer {
                 return true;
             }
         }//for
-        if(s.length()>3 && s.charAt(s.length()-1) == 's'){
-            return true;
-        } 
-        if(s.length()>3 &&s.substring(s.length()-2, s.length()) == "ed"){
-            return true;
-        }
+//        if(s.length()>3 && s.charAt(s.length()-1) == 's'){
+//            return true;
+//        } 
+//        if(s.length()>3 &&s.substring(s.length()-2, s.length()) == "ed"){
+//            return true;
+//        }
         return false;
     }
     public static boolean isAdverb(String s){
@@ -106,7 +106,7 @@ public class Tokenizer {
     }
     
     public static boolean isPreposition(String s){
-        String preopositions = "above before except from in near of since for between upon with to at after on";
+        String preopositions = "above before except by from in near of since for between upon with to at after on";
         String [] words = preopositions.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -363,5 +363,39 @@ public static TokenStream lexer(String question){
             return null;
     
         }//catch
+    }
+    public static TokenStream tagger(TokenStream toks){
+        if(toks.peek() == Token.EOF){
+            toks.here = 0;
+            return toks;
+        }
+        if(toks.peek().type == TokenType.unknown){
+            
+            if(toks.last().type == TokenType.article){
+                if(toks.following().type == TokenType.unknown){
+                    toks.next().type = TokenType.adjective;
+                    toks.next().type = TokenType.noun;
+                }
+                else{toks.next().type = TokenType.noun;}
+            }
+            if(toks.last().type == TokenType.adverb){
+                toks.next().type = TokenType.verb;
+            }
+            if(toks.following().type == TokenType.preposition){
+                toks.next().type = TokenType.verb;
+            }
+        }
+        if(toks.peek().type == TokenType.conjunction){
+            if(toks.last().type == TokenType.verb && toks.following().type == TokenType.unknown){
+                toks.next();
+                toks.peek().type = TokenType.verb;
+            }
+            if(toks.last().type == TokenType.noun && toks.following().type == TokenType.unknown){
+                toks.next();
+                toks.peek().type = TokenType.noun;
+            }
+        }
+        toks.next();
+        return tagger(toks);
     }
 }

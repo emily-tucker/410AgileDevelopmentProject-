@@ -45,7 +45,7 @@ public class FactBuilder {
         }
         System.out.println("We found a propernoun: "+toks.peek());
         String nameOne = toks.next().body;
-        while(toks.peek().type != TokenType.verb){
+        while(toks.peek().type != TokenType.verb || (toks.peek().body == "," && toks.following().type==TokenType.article)){
             toks.next();
         }
         System.out.println("We found a linkinVerb: "+toks.peek());
