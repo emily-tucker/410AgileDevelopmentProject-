@@ -18,13 +18,7 @@
 */  
 
 package Token;
-import Token.TokenStream;
-import Token.Token;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import Token.TokenType;
 
 public class Tokenizer {
     
@@ -152,9 +146,13 @@ public class Tokenizer {
     }
     
     
- /*
- *the lexer takes apart a string and makes a tokenstream
- */   
+/***************************************************************************
+* lexer(String question)
+* -----------------------------------
+* Description
+* 
+* **************************************************************************
+*/  
 public static TokenStream lexer(String question)
 
  {
