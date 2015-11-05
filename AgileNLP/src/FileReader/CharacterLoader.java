@@ -1,3 +1,12 @@
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
+
 package FileReader;
 
 import java.util.ArrayList;

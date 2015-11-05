@@ -1,22 +1,33 @@
-/*
- PURPOSE:    DataLoader is a simple class that exposes static methods that return array lists of entity objects
- which represent a single line read in from each entities TSV file.
- All this class does is loop over a given entity file line by line, pass the line into the constuctor
- for that entity (i.e. a movie, character, etc.) which returns the entity as an object, and then loads it into
- an array list.  The array list is then populated with that object.  Once the file is completely read and loadeded
- into an array list of entities, the array list is returned.
 
- */
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/
+
 package FileReader;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+/***************************************************************************
+* CLASS DataLoader
+* -----------------------------------
+ PURPOSE:    DataLoader is a simple class that exposes static methods that return array lists of entity objects
+ which represent a single line read in from each entities TSV file.
+ All this class does is loop over a given entity file line by line, pass the line into the constuctor
+ for that entity (i.e. a movie, character, etc.) which returns the entity as an object, and then loads it into
+ an array list.  The array list is then populated with that object.  Once the file is completely read and loadeded
+ into an array list of entities, the array list is returned.
+* **************************************************************************
+*/  
 
 public class DataLoader {
 

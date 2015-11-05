@@ -1,9 +1,21 @@
-/*
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
+
+/***************************************************************************
+* CLASS Token
+* -----------------------------------
+* Description
  *This class contains a word and its type. In this case, our type will be its part of speech
  *This is the same token class used in Data Structures 
  * Author: Prof Peterson
- *
- */
+* **************************************************************************
+*/
 
 package Token;
 import Token.TokenType;

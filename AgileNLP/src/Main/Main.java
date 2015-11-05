@@ -1,6 +1,7 @@
 
 package Main;
 
+import resources.MrMovieLogo;
 import Token.Tokenizer;
 import Token.Token;
 import Token.TokenStream;
