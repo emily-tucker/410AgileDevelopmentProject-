@@ -1,12 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/***************************************************************************
+* function(param 1, param 2)
+* -----------------------------------
+* Description
+* What this function does
+* Continued
+* **************************************************************************
+*/  
+
+/***************************************************************************
+* CLASS TestDataAggregator
+* -----------------------------------
+* Description
+* Tests the DataAggregator
+* This is one of Barry's tests
+* **************************************************************************
+*/  
 package TestHarness;
 
 import FileReader.DataAggregator;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 
