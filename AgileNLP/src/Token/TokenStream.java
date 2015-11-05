@@ -14,7 +14,8 @@ import java.util.ArrayList;
 * TokenStream
 * -----------------------------------
 * Description
-* This class holds a bunch of tokens in an array list and provides some additional functionality including peek(), and next() which it does by keeping track of what token is currently being acted on
+* This class holds a bunch of tokens in an array list and provides some additional functionality 
+* including peek(), and next() which it does by keeping track of what token is currently being acted on
 * This is the same tokenStream we used in 280 
 * **************************************************************************
 */  

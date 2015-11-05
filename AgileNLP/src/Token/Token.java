@@ -19,7 +19,6 @@
 */
 
 package Token;
-import Token.TokenType;
 import static Token.TokenType.*;
 public class Token {
     public TokenType type;  // The type of speech - e.g. a verb or a noun
