@@ -1,4 +1,3 @@
-
 package Main;
 
 import Fact.FactBuilder;
@@ -8,7 +7,6 @@ import Token.Tokenizer;
 import Token.Token;
 import Token.TokenStream;
 import java.util.Scanner;
-
 
 public class Main {
 
@@ -23,7 +21,7 @@ public class Main {
         System.out.println(logo);
         System.out.println("Welcome to Mr. Movie! ");
         System.out.println("");
-        while(askAnother){
+        while (askAnother) {
             System.out.println("What would you like to know?\n");
             String question = kybd.nextLine();
             System.out.println("");
@@ -32,10 +30,10 @@ public class Main {
             TokenStream toks = Tokenizer.tokenizePlot(question);
             toks = Tokenizer.tagger(toks);
             //Facts database = FactBuilder.glean(toks);
-            
+
             System.out.println("");
             System.out.println("Here is the token stream: ");
-            
+
             Token t;
             while ((t = toks.next()) != Token.EOF) {
                 System.out.println(" " + t + "   (" + t.type + ")");
@@ -44,14 +42,12 @@ public class Main {
             System.out.println("Here are the facts you produced: ");
             //System.out.println(database);
             System.out.println("Would you like to ask another? Y/N");
-            if(kybd.nextLine().contains("N")){
+            if (kybd.nextLine().contains("N")) {
                 askAnother = false;
             }
-            
+
         }
-        
-        
-        
+
     }
-    
+
 }
