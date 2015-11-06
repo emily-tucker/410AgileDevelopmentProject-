@@ -30,7 +30,7 @@ public class Tokenizer {
     *The following functions test whether a word is a certain part of speech, isAdjective does nothing because we cant guess all the adjectives someoneone could use
     */
     public static boolean isProNoun(String s){
-        String pronouns = "I you he she we it they us them me her him myself himself themselves mine ours yours who whom";
+        String pronouns = "I you he she we it they us them me her him myself himself themselves which mine ours yours who whom";
         String [] words = pronouns.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -58,7 +58,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isConjection(String s){
-        String conjunction = "and but or neither nor either";
+        String conjunction = "and that but or if neither nor either than because while where after so though since until whether before although nor like once unless now except";
         String [] words = conjunction.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -70,7 +70,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isVerb(String s){
-        String verb = "'s was is has does did have had";
+        String verb = "'s was is has does did have had will wnat tell work seem feel leave think come see go make";
         String [] words = verb.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -87,6 +87,14 @@ public class Tokenizer {
         return false;
     }
     public static boolean isAdverb(String s){
+        String articles = "there so just now how then more also here well only very even back still as too never really most";
+        String [] words = articles.split(" ");
+        
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
+                return true;
+            }
+        }//for
         return(s.length()>4 && s.substring(s.length()-2, s.length()).equals("ly"));
     }
     public static boolean isGerund(String s){
@@ -106,7 +114,7 @@ public class Tokenizer {
     }
     
     public static boolean isPreposition(String s){
-        String preopositions = "above before except by from in near of since for between upon with to at after on";
+        String preopositions = "above before by from in near of since for between under over upon with to at after on through after over into out about as against during without around among";
         String [] words = preopositions.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -373,28 +381,44 @@ public static TokenStream lexer(String question){
             
             if(toks.last().type == TokenType.article){
                 if(toks.following().type == TokenType.unknown){
-                    toks.next().type = TokenType.adjective;
-                    toks.next().type = TokenType.noun;
+                    toks.peek().type = TokenType.adjective;
+                    toks.following().type = TokenType.noun;
                 }
-                else{toks.next().type = TokenType.noun;}
+                else{toks.peek().type = TokenType.noun;}
             }
             if(toks.last().type == TokenType.adverb){
-                toks.next().type = TokenType.verb;
-            }
-            if(toks.following().type == TokenType.preposition){
-                toks.next().type = TokenType.verb;
-            }
-        }
-        if(toks.peek().type == TokenType.conjunction){
-            if(toks.last().type == TokenType.verb && toks.following().type == TokenType.unknown){
-                toks.next();
                 toks.peek().type = TokenType.verb;
             }
-            if(toks.last().type == TokenType.noun && toks.following().type == TokenType.unknown){
-                toks.next();
-                toks.peek().type = TokenType.noun;
+//            if(toks.following().type == TokenType.article){
+//                toks.peek().type = TokenType.verb;
+//            }
+            if(toks.following().type == TokenType.preposition && toks.away(2).type == TokenType.article ){
+                toks.peek().type = TokenType.noun; 
+            }
+            if(toks.last().type == TokenType.pronoun){
+                toks.peek().type = TokenType.noun; 
+            }
+            if(toks.last().type == TokenType.noun){
+                toks.peek().type = TokenType.verb;
+            }
+            //trying out some stupid rules 
+            if(toks.following().type == TokenType.unknown && toks.away(2).type == TokenType.unknown){
+                toks.peek().type = TokenType.adjective;
+                toks.following().type = TokenType.adjective;
+                toks.away(2).type = TokenType.noun;
             }
         }
+        
+//        if(toks.peek().type == TokenType.conjunction){
+//            if(toks.last().type == TokenType.verb && toks.following().type == TokenType.unknown){
+//                toks.next();
+//                toks.peek().type = TokenType.verb;
+//            }
+//            if(toks.last().type == TokenType.noun && toks.following().type == TokenType.unknown){
+//                toks.next();
+//                toks.peek().type = TokenType.noun;
+//            }
+//        }
         toks.next();
         return tagger(toks);
     }

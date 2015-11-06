@@ -75,4 +75,9 @@ public class TokenStream {
             return tokens.get(here+1);}
         else return Token.EOF;
     }
+    public Token away(int i) {
+        if (here < size) {
+            return tokens.get(here + i);}
+        else return Token.EOF;
+    }
 }
