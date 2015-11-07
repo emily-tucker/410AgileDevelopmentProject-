@@ -32,5 +32,5 @@ package Token;
  * @author Chris Esterlein
  */
 public enum TokenType {
-    noun, pronoun, propernoun, verb, adjective, adverb, article, preposition, conjunction, interjection, number, punctuation, unknown;  
+    noun, pronoun, propernoun, verb, adjective, adverb, article, preposition, conjunction, interjection, number, punctuation, gerund, unknown;  
 }

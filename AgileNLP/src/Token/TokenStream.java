@@ -60,10 +60,19 @@ public class TokenStream {
     * This is NON-Destructive
     * **************************************************************************
     */  
-        public Token peek() {
+    public Token peek() {
         if (here < size) {
             return tokens.get(here);}
         else return Token.EOF;
     }
-    
+     public Token last() {
+        if (here < size) {
+            return tokens.get(here-1);}
+        else return Token.EOF;
+    }
+    public Token following() {
+        if (here < size) {
+            return tokens.get(here+1);}
+        else return Token.EOF;
+    }
 }
