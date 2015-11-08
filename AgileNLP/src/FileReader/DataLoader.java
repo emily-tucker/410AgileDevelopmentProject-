@@ -10,6 +10,7 @@
 
 package FileReader;
 
+import Error.HandleError;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -57,6 +58,7 @@ public class DataLoader {
 
             return reader;
         } catch (Exception ex) {
+            HandleError.HandleError(ex);
             return null;
         }
     }
@@ -163,48 +165,58 @@ public class DataLoader {
 
         } catch (Exception ex) {
             //TODO: NOT DEALING WITH EXCEPTIONS RIGHT NOW
+            HandleError.HandleError(ex);
             return null;
         }
     }
 
-    protected static Object GetObjectData(DataType dt, ObjectType ot) {
-        String s_plot_summary_path = "/resources/plot_summaries.txt";
-        String s_movie_path = "/resources/movie.metadata.tsv";
-        String s_character_path = "/resources/character.metadata.tsv";
-        String s_name_cluster_path = "/resources/name.clusters.txt";
-        String s_path = "";
+    protected static Object GetObjectData(DataType dt, ObjectType ot) 
+    {
+        try
+        {
+            String s_plot_summary_path = "/resources/plot_summaries.txt";
+            String s_movie_path = "/resources/movie.metadata.tsv";
+            String s_character_path = "/resources/character.metadata.tsv";
+            String s_name_cluster_path = "/resources/name.clusters.txt";
+            String s_path = "";
 
-        switch (ot) {
-            case character:
-                s_path = s_character_path;
-                break;
-            case movie:
-                s_path = s_movie_path;
-                break;
-            case name_cluster:
-                s_path = s_name_cluster_path;
-                break;
-            case plot_summary:
-                s_path = s_plot_summary_path;
-                break;
-            default:
-                s_path = "";
-                break;
+            switch (ot) {
+                case character:
+                    s_path = s_character_path;
+                    break;
+                case movie:
+                    s_path = s_movie_path;
+                    break;
+                case name_cluster:
+                    s_path = s_name_cluster_path;
+                    break;
+                case plot_summary:
+                    s_path = s_plot_summary_path;
+                    break;
+                default:
+                    s_path = "";
+                    break;
 
-        }
-
-        Object o = GetData(true, s_path, "\t", dt, ot);
-        if (o == null) {
-            return null;
-        } else {
-            if (dt == DataType.hash_table) {
-                return (Hashtable) o;
-            } else if (dt == DataType.array_list) {
-                ArrayList x = (ArrayList) o;
-                return x;
-            } else {
-                return null;
             }
+
+            Object o = GetData(true, s_path, "\t", dt, ot);
+            if (o == null) {
+                return null;
+            } else {
+                if (dt == DataType.hash_table) {
+                    return (Hashtable) o;
+                } else if (dt == DataType.array_list) {
+                    ArrayList x = (ArrayList) o;
+                    return x;
+                } else {
+                    return null;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            HandleError.HandleError(ex);
+            return null;
         }
     }
 
@@ -271,6 +283,7 @@ public class DataLoader {
             return cl;
         } catch (Exception ex) {
             //TODO: NOT DEALING WITH EXCEPTIONS RIGHT NOW
+            HandleError.HandleError(ex);
             return null;
         }
 
