@@ -10,6 +10,7 @@
 package FileReader;
 
 import Error.HandleError;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Set;
@@ -117,8 +118,34 @@ public class DataAggregator {
             });
             System.out.println("Completed Composite Movie Character Assignment: " + new Date());
 
+            
+            //lets loop over movies again now and create character facts
+            Set<Integer> composite_movie_keys = composite_movies.keySet();  // movie key set  
+
+            composite_movie_keys.stream().forEach((composite_movie_key) -> {
+                MovieComposite cm1 = (MovieComposite)composite_movies.get(composite_movie_key);
+                ArrayList f = FactExtractor.MovieCharacterFactExtractor.CompileCharacterMovieFacts(cm1.movie, cm1.characters);
+
+                if(f.size() > 0)
+                {
+                    cm1.facts.addAll(f);
+                }
+                
+            });
+            System.out.println("Completed Movie Character Fact Assignment: " + new Date());
+
+
+            //TO DO
+            System.out.println("Completed Movie Plot Summary Fact Assignment: " + new Date());
+            
+            
             return composite_movies;
+        
+
+
+        
         }
+
         catch (Exception ex)
         {
             HandleError.HandleError(ex);
