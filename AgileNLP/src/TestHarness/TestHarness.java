@@ -16,6 +16,7 @@ public class TestHarness {
     public static void main(String[] args) {
         //feel free to write your own test harness and run it from here
         //TestDataLoader.run();
-        TestDataAggregator.run();
+        //TestDataAggregator.run();
+        TestCache.test_loading_cache();
     }    
 }

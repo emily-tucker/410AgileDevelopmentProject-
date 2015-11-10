@@ -31,39 +31,26 @@ import java.util.Hashtable;
 */  
 
 public class DataLoader {
-
-    protected enum DataType {
+    
+    static String s_plot_summary_path = "/resources/plot_summaries.txt";
+    static String s_movie_path = "/resources/movie.metadata.tsv";
+    static String s_character_path = "/resources/character.metadata.tsv";
+    static String s_name_cluster_path = "/resources/name.clusters.txt";
+    
+    public enum DataType {
 
         hash_table, array_list
     };
 
-    protected enum ObjectType {
+    public enum ObjectType {
 
-        character, movie, name_cluster, plot_summary
+        character, movie, name_cluster, plot_summary, movie_composite
     };
 
-    private static BufferedReader GetBufferedReader(Boolean resources, String path_to_file) {
-        try {
-            InputStream input_stream;
-            BufferedReader reader;
 
-            if (resources) {
-                input_stream = DataLoader.class.getResourceAsStream(path_to_file);
-            } else {
-                input_stream = new FileInputStream(path_to_file);
-            }
 
-            //load buffered reader
-            reader = new BufferedReader(new InputStreamReader(input_stream));
-
-            return reader;
-        } catch (Exception ex) {
-            HandleError.HandleError(ex);
-            return null;
-        }
-    }
-
-    private static Object GetData(Boolean resources, String path_to_file, String splitter, DataType dt, ObjectType t) {
+    @SuppressWarnings("unchecked")
+    public static Object GetData(Boolean resources, String path_to_file, String splitter, DataType dt, ObjectType t) {
         try {
 
             Hashtable ht;
@@ -77,7 +64,7 @@ public class DataLoader {
             int i = 0;
 
             BufferedReader reader;
-            reader = GetBufferedReader(resources, path_to_file);
+            reader = FileIO.GetBufferedReader(resources, path_to_file);
 
             //declare the hash table explicitly
             switch (t)
@@ -102,6 +89,7 @@ public class DataLoader {
             
             while ((read_line = reader.readLine()) != null) {
                 temp = read_line.split(splitter);
+                    
 
                 switch (t) {
                     case character:
@@ -123,6 +111,11 @@ public class DataLoader {
                         NameCluster nc = new NameCluster(temp);
                         key = java.util.UUID.randomUUID().toString();
                         o = nc;
+                        break;
+                    case movie_composite:
+                        MovieComposite mc = new MovieComposite(read_line);
+                        key_int = mc.movie.wikipedia_movie_id;
+                        o = mc;
                         break;
                     default:
                         o = null;
@@ -174,10 +167,6 @@ public class DataLoader {
     {
         try
         {
-            String s_plot_summary_path = "/resources/plot_summaries.txt";
-            String s_movie_path = "/resources/movie.metadata.tsv";
-            String s_character_path = "/resources/character.metadata.tsv";
-            String s_name_cluster_path = "/resources/name.clusters.txt";
             String s_path = "";
 
             switch (ot) {
@@ -264,7 +253,7 @@ public class DataLoader {
             String temp[];
 
             BufferedReader reader;
-            reader = GetBufferedReader(true, "/resources/character.metadata.tsv");
+            reader = FileIO.GetBufferedReader(true, s_character_path);
 
             while ((read_line = reader.readLine()) != null) {
                 if (read_line != null) {
