@@ -19,11 +19,29 @@
 
 package FileReader;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class MovieComposite {
     public Movie movie =  new Movie();
     public PlotSummary plot_summary = new PlotSummary();
     public ArrayList characters = new ArrayList();
+    public ArrayList facts = new ArrayList();
+    
+    public MovieComposite()
+    {
+        
+    }
+
+    public MovieComposite(String json)
+    {
+        Gson g = new Gson();
+        
+        MovieComposite mc = g.fromJson(json, MovieComposite.class);
+        this.movie = mc.movie;
+        this.plot_summary = mc.plot_summary;
+        this.characters = mc.characters;
+        this.facts = mc.facts;
+    }
 
 }
