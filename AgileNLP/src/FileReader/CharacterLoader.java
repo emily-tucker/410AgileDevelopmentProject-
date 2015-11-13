@@ -43,8 +43,6 @@ public class CharacterLoader {
     {
         if(c.freebase_character_id != "" &&  c.wikipedia_movie_id != 0)
         {
-            
-
             CharactersArrayList.add(c);
             //CharactersHashtable.put(c.freebase_character_id, c);
         }
