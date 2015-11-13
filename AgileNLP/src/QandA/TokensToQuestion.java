@@ -27,7 +27,7 @@ public class TokensToQuestion {
     private TokensToQuestion(){}
     public String MakeQuestion(TokenStream stream){
         String currentToken = stream.peek().body;
-        String nextToken = stream.following().body;
+        String nextToken = stream.away(1).body;
         if(Tokenizer.isWhWord(currentToken)){
             if(currentToken.equals("who")){
                 if(Tokenizer.isVerb(nextToken)){
