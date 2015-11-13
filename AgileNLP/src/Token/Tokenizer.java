@@ -46,7 +46,7 @@ public class Tokenizer {
     }
     public static boolean isAdjective(String s){
         //this is clearly not right btw
-        String adjective = "what red orange yellow green blue purple";
+        String adjective = "his hers what red orange yellow green blue purple";
         String [] words = adjective.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -144,7 +144,7 @@ public class Tokenizer {
     }
     public static boolean isPunctuation(String c){
         String punct = "' (),=+-*/;:.?";
-        return punct.contains(c);
+        return punct.contains(c) || c.equals("\"");
     }
 /***************************************************************************
 * lexer(String question)
@@ -290,11 +290,15 @@ public static TokenStream lexer(String question){
                 int col = 0;
                 while (col < line.length()) {
                     
-                    
                     char ch = line.charAt(col);
                     if (Character.isWhitespace(ch)) {
                         col++;
-                    } else if (Character.isLetter(ch) || ch == '\'') {
+                    }else if(isPunctuation(String.valueOf(ch))){
+                        
+                        toks.addToken(new Token(TokenType.punctuation, String.valueOf(ch)));
+                        col++;
+                        
+                    }else if (Character.isLetter(ch)) {
                         String word = new String();
                         word = word + ch;
                         col++;
@@ -333,6 +337,7 @@ public static TokenStream lexer(String question){
                 else if(isPreposition(word)){
                     toks.addToken(new Token(TokenType.preposition, word));
                 }
+                
                 else{
                     toks.addToken(new Token(TokenType.unknown, word));
                 }
@@ -378,6 +383,7 @@ public static TokenStream lexer(String question){
             if(toks.away(1).type == TokenType.propernoun){
                 toks.next().type = TokenType.verb;
             }
+            
             if(toks.away(-1).type == TokenType.article){
                 if(toks.away(1).type == TokenType.unknown){
                     toks.next().type = TokenType.adjective;
@@ -392,6 +398,12 @@ public static TokenStream lexer(String question){
             if(toks.away(1).type == TokenType.preposition){
                 toks.next().type = TokenType.verb;
             }
+            if(toks.away(-1).type == TokenType.adjective){
+                toks.next().type = TokenType.noun;
+            }
+//            if(toks.away(-1).type == TokenType.noun){
+//                toks.next().type = TokenType.verb;
+//            }
         }
         if(toks.peek().type == TokenType.conjunction){
             if(toks.away(-1).type == TokenType.verb && toks.away(1).type == TokenType.unknown){
@@ -402,6 +414,12 @@ public static TokenStream lexer(String question){
                 toks.next();
                 toks.peek().type = TokenType.noun;
             }
+            
+         } 
+        if(toks.peek().type == TokenType.preposition && (toks.away(1).type == TokenType.unknown || toks.away(2).type == TokenType.unknown )){
+                if(toks.away(1).type != TokenType.unknown){
+                    toks.away(2).type = TokenType.noun;
+                }
         }
         
         toks.next();
@@ -409,25 +427,41 @@ public static TokenStream lexer(String question){
     }
     
     public static TokenStream parse(TokenStream toks){
-        TokenStream newToks = new TokenStream();
+        if(toks.peek() == Token.EOF){
+            toks.here = 0;
+            return toks;
+        }
+        //TokenStream newToks = new TokenStream();
         String nounPhrase = "";
-        if(toks.peek().type == TokenType.article){
+        String verbPhrase = "";
+        
+        
+        if(toks.peek().type == TokenType.article || toks.peek().type == TokenType.propernoun || toks.peek().type == TokenType.noun){
             nounPhrase +=  toks.peek().body;
             
-            while(toks.peek().type != TokenType.noun){
+            while(toks.peek().type != TokenType.verb || toks.peek().type != TokenType.unknown  ){
                 nounPhrase += " " + toks.peek().body;
-                toks.next();
+                System.out.println(toks.peek().body);
+                toks.deleteThis();
             }
-            nounPhrase += " " + toks.next().body;
             
-            toks.addToken(new Token(TokenType.nounphrase, nounPhrase));
+            toks.peek().body = nounPhrase;
+            toks.peek().type = TokenType.nounphrase;
             
-            
-            if(toks.away(1).type == TokenType.adjective || toks.away(1).type == TokenType.noun){
-                
             }
+            if(toks.peek().type == TokenType.pronoun){
+                toks.peek().type = TokenType.nounphrase;
+            }
+            
+            while(toks.peek().type != TokenType.punctuation && !toks.peek().body.equals(".")){
+                verbPhrase += " " + toks.peek().body;
+                toks.deleteThis();
+            }
+            toks.addToken(new Token(TokenType.verbphrase, verbPhrase));
+            toks.next();
+            return parse(toks) ; 
         
-        }
+        
     
     }
 }
