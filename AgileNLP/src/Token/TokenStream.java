@@ -65,14 +65,15 @@ public class TokenStream {
             return tokens.get(here);}
         else return Token.EOF;
     }
-     public Token last() {
+     
+    public Token away(int i) {
         if (here < size) {
-            return tokens.get(here-1);}
+            return tokens.get(here + i);}
         else return Token.EOF;
     }
-    public Token following() {
-        if (here < size) {
-            return tokens.get(here+1);}
-        else return Token.EOF;
+    
+    public void deleteThis(){
+        size--;
+        tokens.remove(here);
     }
 }

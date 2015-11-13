@@ -70,7 +70,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isVerb(String s){
-        String verb = "'s was is has does did have had";
+        String verb = "'s was is are has does did have had";
         String [] words = verb.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -179,6 +179,7 @@ public static TokenStream lexer(String question){
                 }
                 
                 if (isFirstWord && isWhWord(word)){ 
+                    
                     System.out.print("You said, '" + word + "', so I know you are looking for a ");
                     
                     if("Who".equalsIgnoreCase(word)){
@@ -210,6 +211,9 @@ public static TokenStream lexer(String question){
                     System.out.println("this is a yes or no question");
                 
                 
+                }
+                if(isFirstWord){
+                    toks.addToken(new Token(TokenType.qword, word));
                 }
                 if(isProNoun(word)){
                     toks.addToken(new Token(TokenType.pronoun, word));
@@ -364,38 +368,66 @@ public static TokenStream lexer(String question){
     
         }//catch
     }
+    
     public static TokenStream tagger(TokenStream toks){
         if(toks.peek() == Token.EOF){
             toks.here = 0;
             return toks;
         }
         if(toks.peek().type == TokenType.unknown){
-            
-            if(toks.last().type == TokenType.article){
-                if(toks.following().type == TokenType.unknown){
+            if(toks.away(1).type == TokenType.propernoun){
+                toks.next().type = TokenType.verb;
+            }
+            if(toks.away(-1).type == TokenType.article){
+                if(toks.away(1).type == TokenType.unknown){
                     toks.next().type = TokenType.adjective;
                     toks.next().type = TokenType.noun;
                 }
                 else{toks.next().type = TokenType.noun;}
             }
-            if(toks.last().type == TokenType.adverb){
+            
+            if(toks.away(-1).type == TokenType.adverb){
                 toks.next().type = TokenType.verb;
             }
-            if(toks.following().type == TokenType.preposition){
+            if(toks.away(1).type == TokenType.preposition){
                 toks.next().type = TokenType.verb;
             }
         }
         if(toks.peek().type == TokenType.conjunction){
-            if(toks.last().type == TokenType.verb && toks.following().type == TokenType.unknown){
+            if(toks.away(-1).type == TokenType.verb && toks.away(1).type == TokenType.unknown){
                 toks.next();
                 toks.peek().type = TokenType.verb;
             }
-            if(toks.last().type == TokenType.noun && toks.following().type == TokenType.unknown){
+            if(toks.away(-1).type == TokenType.noun && toks.away(1).type == TokenType.unknown){
                 toks.next();
                 toks.peek().type = TokenType.noun;
             }
         }
+        
         toks.next();
         return tagger(toks);
+    }
+    
+    public static TokenStream parse(TokenStream toks){
+        TokenStream newToks = new TokenStream();
+        String nounPhrase = "";
+        if(toks.peek().type == TokenType.article){
+            nounPhrase +=  toks.peek().body;
+            
+            while(toks.peek().type != TokenType.noun){
+                nounPhrase += " " + toks.peek().body;
+                toks.next();
+            }
+            nounPhrase += " " + toks.next().body;
+            
+            toks.addToken(new Token(TokenType.nounphrase, nounPhrase));
+            
+            
+            if(toks.away(1).type == TokenType.adjective || toks.away(1).type == TokenType.noun){
+                
+            }
+        
+        }
+    
     }
 }
