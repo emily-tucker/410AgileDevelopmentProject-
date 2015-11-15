@@ -65,14 +65,19 @@ public class TokenStream {
             return tokens.get(here);}
         else return Token.EOF;
     }
-     public Token last() {
+     
+    public Token away(int i) {
         if (here < size) {
-            return tokens.get(here-1);}
+            return tokens.get(here + i);}
         else return Token.EOF;
     }
-    public Token following() {
+    
+    public void deleteThis(){
         if (here < size) {
-            return tokens.get(here+1);}
-        else return Token.EOF;
+            tokens.remove(here);
+            size--;
+        }
+        else System.out.println("here is greater than size");
     }
+    
 }
