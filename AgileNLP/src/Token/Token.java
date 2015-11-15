@@ -28,6 +28,11 @@ public class Token {
         this.type = type;
         this.body = body;
     }
+    public Token(String body) // Constructor that allows for only a String to be put in (Type may need to be changed)
+    {
+        this.type = TokenType.unknown;
+        this.body = body;
+    }
     public String toString() {
         return body;
     }

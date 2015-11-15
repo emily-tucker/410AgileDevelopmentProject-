@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Unsorted;
-
+import Fact.*;
 /**
  *
  * @author stu616647

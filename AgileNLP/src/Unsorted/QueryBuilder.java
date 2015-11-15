@@ -9,6 +9,9 @@ package Unsorted;
  *
  * @author stu616647
  */
+import Fact.*;
+import QandA.*;
+import Token.*;
 public class QueryBuilder {
     public FactFactory ff;
     public TokensToQuestion ttq;
@@ -25,5 +28,6 @@ public class QueryBuilder {
     
     public void update(TokenStream ts){
         //use the current token stream from the input to give us a fact from our factory
+        System.out.println("Needs to be written");
     }
 }
