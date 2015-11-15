@@ -24,7 +24,7 @@ public class TestFacts {
     {
         String path = "c:\\test\\test_data.txt";
         String file_contents = getContentsofFile(path);
-        TokenStream ts1 = Tokenizer.lexer("What movie is Yoda in?");
+        TokenStream ts1 = Tokenizer.tokenizeQuestion("What movie is Yoda in?");
         TokenStream ts2 = Tokenizer.tokenizePlot(file_contents);
         Facts fs1 = FactBuilder.glean(ts1);
         Facts fs2 = FactBuilder.glean(ts2);
