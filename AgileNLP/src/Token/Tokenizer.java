@@ -292,6 +292,17 @@ public static TokenStream tokenizeQuestion(String question){
                     char ch = line.charAt(col);
                     if (Character.isWhitespace(ch)) {
                         col++;
+                    }else if (Character.isDigit(ch)) {
+                        String tok = new String();
+                        tok = tok + ch;
+                        col++;
+                        while (col < line.length() &&
+                                Character.isDigit(line.charAt(col)) || ch == '.' || ch == '/') {
+                                  tok = tok + line.charAt(col);
+                                  col++;
+                        }
+                        toks.addToken(new Token(TokenType.number, tok));
+                        
                     }else if(isPunctuation(String.valueOf(ch))){
                         if(ch=='.'){
                             isFirstWord = true; 
@@ -347,18 +358,7 @@ public static TokenStream tokenizeQuestion(String question){
                     toks.addToken(new Token(TokenType.unknown, word));
                 }
                 isFirstWord = false;
-                    } else if (Character.isDigit(ch)) {
-                        String tok = new String();
-                        tok = tok + ch;
-                        col++;
-                        while (col < line.length() &&
-                                Character.isDigit(line.charAt(col))) {
-                                  tok = tok + line.charAt(col);
-                                  col++;
-                        }
-                        toks.addToken(new Token(TokenType.number, tok));
-                        
-                    } else {
+                    }  else {
                         System.out.print("Invalid character " + ch + " in " + line);
                         errs++;
                         col++;

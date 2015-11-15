@@ -11,26 +11,26 @@ package Fact;
  */
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
+import Token.*;
 public class Fact {
-    String [] factoid = new String [3];
+    Token [] factoid = new Token [3];
     
-    public Fact(String n1, String v, String n2){
+    public Fact(Token n1, Token v, Token n2){
         factoid[0] = n1;
         factoid[1] = v;
         factoid[2] = n2;
     
     }
-    public boolean isRelevant(String s){
+    public boolean isRelevant(Fact s){
         for(int i = 0; i < factoid.length; i++){
-            if (factoid[i].equalsIgnoreCase(s))
+            if (factoid[i].body.equalsIgnoreCase(s.factoid[i].body))
                 return true;
         
         }
         return false;
     }
-    public String getRelative(String s){
-        if(s.equalsIgnoreCase(factoid[0]))
+    public Token getRelative(Fact s){
+        if(factoid[0].body.equalsIgnoreCase(s.factoid[0].body))
             return factoid[2];
         return factoid[0];
     }
