@@ -153,7 +153,7 @@ public class Tokenizer {
 * 
 * **************************************************************************
 */  
-public static TokenStream lexer(String question){
+public static TokenStream tokenizeQuestion(String question){
     question = question.trim();
         TokenStream toks = new TokenStream();
         int errs = 0;
@@ -282,7 +282,6 @@ public static TokenStream lexer(String question){
         int lineNum = 1;
         int errs = 0;
         String line;
-        String punct = "(),=+-*/;:.^;";
         boolean isFirstWord = true;
         try {
             while ((line = input.readLine()) != null) {
@@ -294,9 +293,15 @@ public static TokenStream lexer(String question){
                     if (Character.isWhitespace(ch)) {
                         col++;
                     }else if(isPunctuation(String.valueOf(ch))){
+                        if(ch=='.'){
+                            isFirstWord = true; 
+                            toks.addToken(new Token(TokenType.EOS, String.valueOf(ch)));
+                            col++;
+                        }
+                        else{
+                            toks.addToken(new Token(TokenType.punctuation, String.valueOf(ch)));
                         
-                        toks.addToken(new Token(TokenType.punctuation, String.valueOf(ch)));
-                        col++;
+                            col++;}
                         
                     }else if (Character.isLetter(ch)) {
                         String word = new String();
@@ -353,10 +358,6 @@ public static TokenStream lexer(String question){
                         }
                         toks.addToken(new Token(TokenType.number, tok));
                         
-                    } else if (punct.contains(Character.toString(ch))) {
-                        toks.addToken(new Token(TokenType.punctuation, Character.toString(ch)));
-                        if(ch=='.'){isFirstWord = true;}
-                        col++;
                     } else {
                         System.out.print("Invalid character " + ch + " in " + line);
                         errs++;
@@ -379,27 +380,41 @@ public static TokenStream lexer(String question){
             toks.here = 0;
             return toks;
         }
+        if(toks.peek().type == TokenType.propernoun && toks.away(1).type == TokenType.propernoun){   
+            toks.peek().body += " " + toks.away(1).body;
+            toks.next();
+            toks.deleteThis();
+            System.out.println("found two propernouns");
+        
+        }
         if(toks.peek().type == TokenType.unknown){
-            if(toks.away(1).type == TokenType.propernoun){
-                toks.next().type = TokenType.verb;
+            
+            if(toks.away(1).type == TokenType.propernoun && toks.away(-1).type == TokenType.unknown){
+                toks.away(-1).type = TokenType.adverb;
+                toks.peek().type = TokenType.adjective;
+            }else if(toks.away(1).type == TokenType.propernoun){
+                toks.peek().type = TokenType.verb;
             }
             
+        }
+        if(toks.peek().type == TokenType.unknown){    
             if(toks.away(-1).type == TokenType.article){
                 if(toks.away(1).type == TokenType.unknown){
                     toks.next().type = TokenType.adjective;
-                    toks.next().type = TokenType.noun;
+                    toks.peek().type = TokenType.noun;
                 }
-                else{toks.next().type = TokenType.noun;}
+                else{toks.peek().type = TokenType.noun;}
             }
-            
+        }
+        if(toks.peek().type == TokenType.unknown){       
             if(toks.away(-1).type == TokenType.adverb){
-                toks.next().type = TokenType.verb;
+                toks.peek().type = TokenType.verb;
             }
             if(toks.away(1).type == TokenType.preposition){
-                toks.next().type = TokenType.verb;
+                toks.peek().type = TokenType.verb;
             }
             if(toks.away(-1).type == TokenType.adjective){
-                toks.next().type = TokenType.noun;
+                toks.peek().type = TokenType.noun;
             }
 //            if(toks.away(-1).type == TokenType.noun){
 //                toks.next().type = TokenType.verb;
@@ -407,12 +422,10 @@ public static TokenStream lexer(String question){
         }
         if(toks.peek().type == TokenType.conjunction){
             if(toks.away(-1).type == TokenType.verb && toks.away(1).type == TokenType.unknown){
-                toks.next();
-                toks.peek().type = TokenType.verb;
+                toks.away(1).type = TokenType.verb;
             }
             if(toks.away(-1).type == TokenType.noun && toks.away(1).type == TokenType.unknown){
-                toks.next();
-                toks.peek().type = TokenType.noun;
+                toks.away(1).type  = TokenType.noun;
             }
             
          } 
