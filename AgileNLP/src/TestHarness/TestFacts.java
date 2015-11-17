@@ -59,6 +59,8 @@ public class TestFacts {
 
             String plot_summary = cm1.plot_summary.summary;
 
+            System.out.println(plot_summary);
+            
             TokenStream ts2 = Tokenizer.tokenizePlot(plot_summary);
             ts2 = Tokenizer.tagger(ts2);
             System.out.println("" + ts2.tokens);
