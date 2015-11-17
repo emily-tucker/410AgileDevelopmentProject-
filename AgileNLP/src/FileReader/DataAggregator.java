@@ -136,6 +136,9 @@ public class DataAggregator {
 
 
             //TO DO
+            //get plot summary string
+            //retrieve fact array list
+            //append to cm1.facts.addAll(fact_array_list)
             System.out.println("Completed Movie Plot Summary Fact Assignment: " + new Date());
             
             
