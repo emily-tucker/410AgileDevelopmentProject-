@@ -70,7 +70,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isVerb(String s){
-        String verb = "'s was is are has does did have had";
+        String verb = "'s was is are has does did have had in";
         String [] words = verb.split(" ");
         
         for(int i = 0; i < words.length; i ++){
