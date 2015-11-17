@@ -1,57 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Fact;
+
+import FileReader.DataAggregator;
+import FileReader.MovieCharacter;
+import FileReader.MovieComposite;
+import static TestHarness.OneWordParseTest.found;
+//import static TestHarness.TestFacts.found;
 import Token.*;
 import static Token.Tokenizer.*;
 import java.io.BufferedReader;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Set;
 
-/**
- *
- * @author Chris
- */
 public class FactBuilder {
-    
+
     String corpus;
     Facts facts = new Facts();
-    
-    public FactBuilder(String c){
+    public FactBuilder(String c) {
         corpus = c;
     }
-    public static Facts glean(TokenStream toks){
-        Facts facts = new Facts();
-        if(toks.peek() == Token.EOF){
-            return facts;
+
+    public static ArrayList<Token> glean(TokenStream toks) {
+        ArrayList<Token> tar = new ArrayList<>();
+        if (toks.peek() == Token.EOF) {
+            return tar;
         }
-        
-        while (toks.peek().type != TokenType.propernoun){
+        while (toks.peek().type != TokenType.propernoun) {
             toks.next();
         }
-        System.out.println("We found a propernoun: "+toks.peek());
-        Token nameOne = toks.next();
-        while(toks.peek().type != TokenType.verb || (toks.peek().body == "," && toks.away(1).type==TokenType.article)){
+        Token first = toks.peek();
+        tar.add(first);
+        System.out.println("Found PN: " + first.body);
+
+        while (toks.peek().type != TokenType.verb) {
             toks.next();
         }
-        System.out.println("We found a linkinVerb: "+toks.peek());
-        Token linkingVerb = toks.next();
-        
-        while(toks.peek().type != TokenType.verb && toks.peek().body != "."){
+
+        Token second = toks.peek();
+        tar.add(second);
+        System.out.println("Found A: " + second.body);
+        while (toks.peek().type != TokenType.noun) {
             toks.next();
         }
-        if(toks.peek().body != "."){
-            System.out.println("We found a second proper noun: "+toks.peek());
-            Fact f = new Fact(nameOne, linkingVerb, toks.peek());
-            facts.addFact(f);
+        Token third = toks.peek();
+        tar.add(third);
+        System.out.println("Found N: " + third.body);
+
+        if (toks.peek() == Token.EOF) {
+            System.out.print("");
         }
         toks.next();
         return glean(toks);
-        
+
     }
-    
+
 }
