@@ -124,7 +124,7 @@ public class DataAggregator {
 
             composite_movie_keys.stream().forEach((composite_movie_key) -> {
                 MovieComposite cm1 = (MovieComposite)composite_movies.get(composite_movie_key);
-                ArrayList f = FactExtractor.MovieCharacterFactExtractor.CompileCharacterMovieFacts(cm1.movie, cm1.characters);
+                ArrayList f = FactExtractor.MovieActorFactExtractor.CompileActorMovieFacts(cm1.movie, cm1.characters);
 
                 if(f.size() > 0)
                 {
