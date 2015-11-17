@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Unsorted;
-
+import Fact.*;
 /**
  *
  * @author stu616647
@@ -19,5 +19,7 @@ public class MovieSearcher {
     
     public Fact query(Fact f){
         //search a FactHeap for a matching fact and mutate the input to contain the answer.
+        System.out.println("Needs to be written");
+        return null;
     }
 }
