@@ -28,21 +28,32 @@ public class TokensToQuestion {
     private TokensToQuestion() {
     }
 
-    public Fact MakeQuestion(TokenStream stream) {
+    public static Fact MakeQuestion(TokenStream stream) {
         String currentToken = stream.peek().body;
-        Token nextToken = stream.away(1);
+        Token nextToken = stream.away(2);
+        //System.out.println(currentToken);
+        //System.out.println(nextToken);
+        //System.out.println("STARTING ANALISYS");
         if (Tokenizer.isWhWord(currentToken)) {
-            if (currentToken.equals("who")) {
+            //System.out.println("Okay, so it's a WH-word.");
+            if (currentToken.equalsIgnoreCase("who")) {
+                //System.out.println("WE FOUND A 'WHO'");
+                //System.out.println(nextToken);
                 if (nextToken.type == TokenType.verb) {
+                    //System.out.println("The next word is a verb! Let's get jiggy with it.");
                     TokenStream returnStream = new TokenStream();
                     returnStream.addToken(new Token(TokenType.propernoun, "?")); //Start building the response. A tokenstream, starting with an unknown person.
                     returnStream.addToken(nextToken); //Then we add in the verb we just found.
+                    //System.out.println(returnStream.peek());
+                    //System.out.println(returnStream.away(1));
+                    //System.out.println(returnStream.away(2));
                     nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-                    Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
+                    Fact returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
                     return returnFact;
                     
                 }
-            } else if (currentToken.equals("what")) { //Similar to Who, but we return a noun of some kind. Not a proper noun, a regular one.
+            } else if (currentToken.equalsIgnoreCase("what")) { //Similar to Who, but we return a noun of some kind. Not a proper noun, a regular one.
+                //System.out.println("WE FOUND A 'WHAT'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream();
                     returnStream.addToken(new Token(TokenType.noun, "?"));
@@ -51,7 +62,8 @@ public class TokensToQuestion {
                     Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
                     return returnFact;
                 }
-            } else if (currentToken.equals("where")) { //Similar to Who, except with a 'place' as the return type.
+            } else if (currentToken.equalsIgnoreCase("where")) { //Similar to Who, except with a 'place' as the return type.
+                //System.out.println("WE FOUND A 'WHERE'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream();
                     returnStream.addToken(new Token(TokenType.propernoun, "unknown")); //Places are proper nouns, technically. If there's more functionality later, we'll add that in. For now it's just a proper noun.
@@ -60,7 +72,8 @@ public class TokensToQuestion {
                     Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
                     return returnFact;
                 }
-            } else if (currentToken.equals("when")) {
+            } else if (currentToken.equalsIgnoreCase("when")) {
+                //System.out.println("WE FOUND A 'WHEN'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream(); //This is very similar to the Who question, except that it can only return a movie's release date, or date information.
                     returnStream.addToken(new Token(TokenType.number, "?")); //It's gotta be a number.
@@ -68,7 +81,9 @@ public class TokensToQuestion {
                     Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
                     return returnFact;
                 }
-            } else if (currentToken.equals("why")) {
+            } else if (currentToken.equalsIgnoreCase("why")) {
+                //System.out.println("WE FOUND A 'WHY'");
+                System.out.println("Do not ask me WHY. I cannot answer philosophical questions.");
                 TokenStream returnStream = new TokenStream(); //WE CAN'T DO WHY'S.
                 returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
                 returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
@@ -77,6 +92,7 @@ public class TokensToQuestion {
                 return returnFact;
             }
         } else if (Tokenizer.isVerb(currentToken)) { //THIS ONE DOESN'T WORK YET
+            //System.out.println("WE FOUND A VERB");
             TokenStream returnStream = new TokenStream();
             //THERE IS NO YES/NO, WE JUST FEED IT A COMPLETE FACT AND HOPE THAT IT MATCHES SOMETHING.
             returnStream.addToken(new Token(currentToken)); //We add in the verb we just found.
@@ -84,7 +100,8 @@ public class TokensToQuestion {
             Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
             return returnFact;
         }
-
+        
+        System.out.println("WE FOUND A FAILURE. IT WAS ME.");
         TokenStream returnStream = new TokenStream(); //Failure clause.
         returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
         returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
@@ -93,11 +110,11 @@ public class TokensToQuestion {
         return returnFact;
     }
 
-    public void nounStripper(TokenStream inStream, TokenStream outStream) {
+    public static void nounStripper(TokenStream inStream, TokenStream outStream) {
         Token currentToken;
         while (inStream.next() != Token.EOF) {
             currentToken = inStream.peek();
-            if (currentToken.type == TokenType.noun) {
+            if (currentToken.type == TokenType.noun || currentToken.type == TokenType.propernoun) {
                 outStream.addToken(currentToken);
             }
         }

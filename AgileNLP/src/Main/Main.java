@@ -8,6 +8,7 @@ import Token.Tokenizer;
 import Token.Token;
 import Token.TokenStream;
 import Token.TokenType;
+import QandA.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -22,12 +23,6 @@ public class Main {
     
     public static void main(String[] args) 
     {
-        //chris_test();
-        lets_do_simple_main();
-    }
-
-    public static void chris_test()
-    {
         // TODO code application logic here
         Scanner kybd = new Scanner(System.in);
         MrMovieLogo logo = new MrMovieLogo();
@@ -41,19 +36,22 @@ public class Main {
             System.out.println("");
             System.out.println("You asked: " + question);
             System.out.println("");
-            TokenStream toks = Tokenizer.tokenizePlot(question);
+            TokenStream toks = Tokenizer.lexer(question);
             toks = Tokenizer.tagger(toks);
+            Fact f = TokensToQuestion.MakeQuestion(toks);
+            System.out.println(f);
+            
             //Facts database = FactBuilder.glean(toks);
             //toks = Tokenizer.parse(toks);
             
-            System.out.println("");
-            System.out.println("Here is the token stream: ");
-
-            Token t;
-            while ((t = toks.next()) != Token.EOF) {
-                System.out.println(" " + t + "   (" + t.type + ")");
-            }
-            System.out.println("");
+//            System.out.println("");
+//            System.out.println("Here is the token stream: ");
+//
+//            Token t;
+//            while ((t = toks.next()) != Token.EOF) {
+//                System.out.println(" " + t + "   (" + t.type + ")");
+//            }
+//            System.out.println("");
             System.out.println("Here are the facts you produced: ");
             //System.out.println(database);
             System.out.println("Would you like to ask another? Y/N");
