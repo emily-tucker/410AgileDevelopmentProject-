@@ -46,7 +46,7 @@ public class Tokenizer {
     }
     public static boolean isAdjective(String s){
         //this is clearly not right btw
-        String adjective = "any his hers what red orange yellow green blue purple good new first last long great little own other old right big high different small large next early young important few public bad" ;
+        String adjective = "one two three four five any his hers what red orange yellow green blue purple good new first last long great little own other old right big high different small large next early young important few public bad" ;
         String [] words = adjective.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -87,6 +87,14 @@ public class Tokenizer {
         return false;
     }
     public static boolean isAdverb(String s){
+        String articles = "not up so out just now how then more also here well only very even back there down still as never";
+        String [] words = articles.split(" ");
+        
+        for(int i = 0; i < words.length; i ++){
+            if(words[i].equalsIgnoreCase(s)){
+                return true;
+            }
+        }//for
         return(s.length()>4 && s.substring(s.length()-2, s.length()).equals("ly"));
     }
     public static boolean isGerund(String s){
@@ -296,6 +304,7 @@ public static TokenStream lexer(String question){
                     }else if(isPunctuation(String.valueOf(ch))&& ch == '.'){
                         
                         toks.addToken(new Token(TokenType.EOS, String.valueOf(ch)));
+                        isFirstWord = true;
                         col++;
                         
                     }else if(isPunctuation(String.valueOf(ch))){
@@ -419,6 +428,11 @@ public static TokenStream lexer(String question){
             }
             //if the token before 
             if(toks.away(-1).type == TokenType.article){
+                if(toks.away(1).type == TokenType.unknown && toks.away(2).type == TokenType.unknown){
+                    toks.next().type = TokenType.adjective;
+                    toks.next().type = TokenType.adjective;
+                    toks.next().type = TokenType.noun;
+                }
                 if(toks.away(1).type == TokenType.unknown){
                     toks.next().type = TokenType.adjective;
                     toks.next().type = TokenType.noun;
@@ -480,15 +494,15 @@ public static TokenStream lexer(String question){
         //TokenStream newToks = new TokenStream();
         String nounPhrase = "";
         String verbPhrase = "";
-        
+        String adjectivePhrase = "";
         
         if(toks.peek().type == TokenType.article || toks.peek().type == TokenType.propernoun || toks.peek().type == TokenType.noun){
             nounPhrase +=  toks.peek().body;
             
-            while(toks.peek().type != TokenType.verb || toks.peek().type != TokenType.unknown  ){
+            while(toks.peek().type != TokenType.verb ){
                 nounPhrase += " " + toks.peek().body;
-                System.out.println(toks.peek().body);
                 toks.deleteThis();
+                toks.next();
             }
             
             toks.peek().body = nounPhrase;
@@ -497,14 +511,25 @@ public static TokenStream lexer(String question){
             }
             if(toks.peek().type == TokenType.pronoun){
                 toks.peek().type = TokenType.nounphrase;
+                toks.next();
             }
             
-            while(toks.peek().type != TokenType.punctuation && !toks.peek().body.equals(".")){
+            while(toks.peek().type != TokenType.EOS && toks.peek().type != TokenType.article && toks.peek().type != TokenType.adjective){
                 verbPhrase += " " + toks.peek().body;
                 toks.deleteThis();
+                toks.next();
             }
             toks.addToken(new Token(TokenType.verbphrase, verbPhrase));
+            
+            while(toks.peek().type != TokenType.EOS && toks.peek().type != TokenType.article && toks.peek().type != TokenType.adjective){
+                adjectivePhrase += " " + toks.peek().body;
+                toks.deleteThis();
+                toks.next();
+            }
+            toks.addToken(new Token(TokenType.adjectivephrase, adjectivePhrase));
+            
             toks.next();
+            
             return parse(toks) ; 
         
         

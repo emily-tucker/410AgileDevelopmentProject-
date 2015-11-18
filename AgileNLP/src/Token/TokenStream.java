@@ -74,7 +74,9 @@ public class TokenStream {
     
     public void deleteThis(){
         if (here < size) {
+            System.out.println("deleted");
             tokens.remove(here);
+            
             size--;
         }
         else System.out.println("here is greater than size");
