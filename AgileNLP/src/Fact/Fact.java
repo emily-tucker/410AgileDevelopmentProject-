@@ -17,6 +17,7 @@ public class Fact {
 
     public String[] bodies = new String[3];
     public TokenType[] types = new TokenType[3];
+    public Token unknown; //The unknown token
 
     public Fact(Token n1, Token v, Token n2) {
         //Bodies array is given the body (string)
@@ -28,6 +29,12 @@ public class Fact {
         types[1] = v.type;
         types[2] = n2.type;
 
+    }
+    
+    public void setQuery()
+    {
+        //Fill the unknown using the MS (Movie Searcher Function)
+        //This is used by Tokens to Question
     }
 
     public boolean isRelevant(String s) {
@@ -76,7 +83,7 @@ public class Fact {
                 toHashCode();
     }
 
-    public Fact ms(Fact[] pool) {
+    public Fact matchQuerey(Fact[] pool) { //Changed a little bit from the Wiki, now returns the matched Fact instead of a boolean from a matched fact
         if (this.types[2] == TokenType.unknown) {
             for (Fact x : pool) {
 
