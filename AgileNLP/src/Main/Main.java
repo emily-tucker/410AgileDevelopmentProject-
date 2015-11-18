@@ -1,11 +1,16 @@
 package Main;
 
+import Fact.Fact;
 import Fact.FactBuilder;
 import Fact.Facts;
 import resources.MrMovieLogo;
 import Token.Tokenizer;
 import Token.Token;
 import Token.TokenStream;
+import Token.TokenType;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -13,7 +18,16 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    private static ArrayList<Fact> facts = new ArrayList<Fact>();
+    
+    public static void main(String[] args) 
+    {
+        //chris_test();
+        lets_do_simple_main();
+    }
+
+    public static void chris_test()
+    {
         // TODO code application logic here
         Scanner kybd = new Scanner(System.in);
         MrMovieLogo logo = new MrMovieLogo();
@@ -48,7 +62,54 @@ public class Main {
             }
 
         }
+        
+    }
+    
+    public static void lets_do_simple_main()
+    {
+        Boolean b = Cache.Cache.FactCacheExists();
+        
+        if (!b)
+        {
+            Cache.Cache.PersistsFactsToCache();
+        }
+        
+        facts = Cache.Cache.LoadFactCache();
+        
+        String input = get_input_from_user();
+        String output = "";
+        Token t = new Token(TokenType.unknown, input);
 
+        for(Fact f: facts)
+        {
+            if(input.equals(f.bodies[0]))
+            {
+                output = input + " is " + f.bodies[1].toString() + " " + f.bodies[2];
+            }
+
+            if(input.equals(f.bodies[2]))
+            {
+                output = input + " is " + f.bodies[1].toString() + " " + f.bodies[0];
+            }
+
+        }
+        
+        System.out.println(output);
     }
 
+    
+    public static String get_input_from_user()
+    {
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            System.out.print("Ask Western Geeeeves.......");
+            String s = br.readLine();
+            return s;
+        }
+        catch (Exception ex)
+        {
+            return "";
+        }
+    }
 }

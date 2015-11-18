@@ -25,9 +25,10 @@ public class MovieActorFactExtractor {
             for(MovieCharacter mc: arraylist_c)
             {
                 Token in = new Token(TokenType.verb, "in");
-                Token actor = new Token(TokenType.propernoun,mc.actor_name );
-                Token movie = new Token(TokenType.propernoun, m.movie_name);
-                
+                Token actor = new Token(TokenType.actor,mc.actor_name );
+                Token movie = new Token(TokenType.movie, m.movie_name);
+                Token character = new Token(TokenType.character, mc.character_name);
+
                 //add base character fact
                 String actor_name = mc.actor_name;
                 f = new Fact(actor,in, movie);
@@ -36,13 +37,21 @@ public class MovieActorFactExtractor {
                 f = new Fact(movie, in, actor);
                 a.add(f);
 
+                f = new Fact(movie, in, character);
+                a.add(f);
+                
+                f = new Fact(character, in, movie);
+
                 //lets split the names apart now
+                //FUCK SPLITTING THE NAME
+                //ALSO MISSING CHARACTER IN THIS LOGIC!
+                /*
                 if(actor_name.contains(" "))
                 {
                     String [] names = actor_name.split(" ");
                     for(String s: names)
                     {
-                        Token name = new Token(TokenType.propernoun, s);
+                        Token name = new Token(TokenType.actor, s);
                        
                         f = new Fact(name, in, movie);
                         a.add(f);
@@ -51,7 +60,7 @@ public class MovieActorFactExtractor {
                         a.add(f);
 
                     }
-                }
+                    */
 
             }
 
