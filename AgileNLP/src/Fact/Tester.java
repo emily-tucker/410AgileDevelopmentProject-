@@ -30,7 +30,7 @@ public class Tester {
         Fact[] pool = {pool2, pool1};
         
         System.out.println(query);
-        System.out.println(query.ms(pool));
+        System.out.println(query.matchQuerey(pool));
 
     }
 }
