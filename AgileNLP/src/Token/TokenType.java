@@ -32,5 +32,5 @@ package Token;
  * @author Chris Esterlein
  */
 public enum TokenType {
-    nounphrase, verbphrase, qword, noun, pronoun, propernoun, verb, adjective, adverb, article, preposition, conjunction, interjection, number, punctuation, gerund, unknown, character, actor, movie;  
+    EOS, nounphrase, verbphrase, qword, noun, pronoun, propernoun, verb, adjective, adverb, article, preposition, conjunction, interjection, number, punctuation, gerund, unknown, character, actor, movie;  
 }

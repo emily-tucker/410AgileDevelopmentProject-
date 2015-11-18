@@ -30,7 +30,7 @@ public class Tokenizer {
     *The following functions test whether a word is a certain part of speech, isAdjective does nothing because we cant guess all the adjectives someoneone could use
     */
     public static boolean isProNoun(String s){
-        String pronouns = "I you he she we it they us them me her him myself himself themselves mine ours yours who whom";
+        String pronouns = "I you he she we it they us them me her him myself himself themselves mine ours yours who whom that";
         String [] words = pronouns.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -46,7 +46,7 @@ public class Tokenizer {
     }
     public static boolean isAdjective(String s){
         //this is clearly not right btw
-        String adjective = "his hers what red orange yellow green blue purple";
+        String adjective = "any his hers what red orange yellow green blue purple good new first last long great little own other old right big high different small large next early young important few public bad" ;
         String [] words = adjective.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -58,7 +58,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isConjection(String s){
-        String conjunction = "and but or neither nor either";
+        String conjunction = "and but or neither nor either & as if than because while after so though since until whether before although nor like once unless now except";
         String [] words = conjunction.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -70,7 +70,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isVerb(String s){
-        String verb = "'s was is are has does did have had in";
+        String verb = "'s was is are has does did have had be do say get make go know ake see come think look want give use find tell ask work seem feel try leave call";
         String [] words = verb.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -106,7 +106,7 @@ public class Tokenizer {
     }
     
     public static boolean isPreposition(String s){
-        String preopositions = "above before except by from in near of since for between upon with to at after on";
+        String preopositions = "above before except by from in near of since for between upon across with to at after on for on at from by about as ino like through after over between out against during without before under around among";
         String [] words = preopositions.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -293,19 +293,27 @@ public static TokenStream lexer(String question){
                     char ch = line.charAt(col);
                     if (Character.isWhitespace(ch)) {
                         col++;
+                    }else if(isPunctuation(String.valueOf(ch))&& ch == '.'){
+                        
+                        toks.addToken(new Token(TokenType.EOS, String.valueOf(ch)));
+                        col++;
+                        
                     }else if(isPunctuation(String.valueOf(ch))){
                         
                         toks.addToken(new Token(TokenType.punctuation, String.valueOf(ch)));
                         col++;
                         
-                    }else if (Character.isLetter(ch)) {
+                    }else if (ch == '&') {
+                        toks.addToken(new Token(TokenType.conjunction, String.valueOf(ch)));
+                        col++;
+                    }else if (Character.isLetter(ch) ) {
                         String word = new String();
                         word = word + ch;
                         col++;
                         char tmp;
                         while (col < line.length() &&
                                (Character.isLetter(tmp = line.charAt(col))
-                                || Character.isDigit(tmp))) {
+                                || Character.isDigit(tmp) || tmp == '-') ) {
                                   word = word + tmp;
                                   col++;
                         }
@@ -379,11 +387,37 @@ public static TokenStream lexer(String question){
             toks.here = 0;
             return toks;
         }
-        if(toks.peek().type == TokenType.unknown){
-            if(toks.away(1).type == TokenType.propernoun){
-                toks.next().type = TokenType.verb;
-            }
+        //two consecutive propernouns makes one propernoun
+        if(toks.peek().type == TokenType.propernoun && toks.away(1).type == TokenType.propernoun){
+            toks.peek().body +=  " " + toks.away(1).body;
+            toks.next();
+            toks.deleteThis();
+        }
+        //if the word has a hyphen, it is an adjective
+        if(toks.peek().body.contains("-")){
+            toks.peek().type = TokenType.adjective;
+        
+        }
+        //if this is the first word
+        if(toks.away(-1).type == TokenType.EOS){
             
+        
+        }
+        if(toks.peek().type == TokenType.gerund){
+            if(toks.away(-1).type == TokenType.pronoun){
+                toks.peek().type = TokenType.adjective;
+            }
+        
+        }
+        //find a token of an unknow type
+        if(toks.peek().type == TokenType.unknown){
+            
+            //if the token after the unknown is a propernoun, it is likely the unknown is a verb
+            //this rule does not make a lot of sense
+            if(toks.away(1).type == TokenType.propernoun){
+                toks.peek().type = TokenType.adjective;
+            }
+            //if the token before 
             if(toks.away(-1).type == TokenType.article){
                 if(toks.away(1).type == TokenType.unknown){
                     toks.next().type = TokenType.adjective;
@@ -395,12 +429,24 @@ public static TokenStream lexer(String question){
             if(toks.away(-1).type == TokenType.adverb){
                 toks.next().type = TokenType.verb;
             }
+            
             if(toks.away(1).type == TokenType.preposition){
                 toks.next().type = TokenType.verb;
+            }
+            if(toks.away(-1).type == TokenType.preposition){
+                if(toks.away(1).type == TokenType.pronoun){
+                    toks.next().type = TokenType.verb;
+                }
+            }
+            if(toks.away(-1).type == TokenType.pronoun){
+                if(toks.away(1).type == TokenType.pronoun){
+                    toks.next().type = TokenType.verb;
+                }
             }
             if(toks.away(-1).type == TokenType.adjective){
                 toks.next().type = TokenType.noun;
             }
+            
 //            if(toks.away(-1).type == TokenType.noun){
 //                toks.next().type = TokenType.verb;
 //            }
