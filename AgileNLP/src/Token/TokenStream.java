@@ -74,7 +74,7 @@ public class TokenStream {
     
     public void deleteThis(){
         if (here < size) {
-            System.out.println("deleted");
+            //System.out.println("deleted");
             tokens.remove(here);
             
             size--;

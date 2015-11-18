@@ -496,40 +496,39 @@ public static TokenStream lexer(String question){
         String verbPhrase = "";
         String adjectivePhrase = "";
         
-        if(toks.peek().type == TokenType.article || toks.peek().type == TokenType.propernoun || toks.peek().type == TokenType.noun){
+        if(toks.peek().type != TokenType.verb ){
             nounPhrase +=  toks.peek().body;
+            toks.deleteThis();
             
-            while(toks.peek().type != TokenType.verb ){
+            while((toks.away(1).type != TokenType.verb && toks.away(1).type != TokenType.adverb )&& toks.peek() != Token.EOF && toks.peek().type != TokenType.preposition){
                 nounPhrase += " " + toks.peek().body;
+                
                 toks.deleteThis();
-                toks.next();
+                
             }
             
-            toks.peek().body = nounPhrase;
+            toks.peek().body = nounPhrase + " " +toks.peek().body;
             toks.peek().type = TokenType.nounphrase;
-            
-            }
-            if(toks.peek().type == TokenType.pronoun){
-                toks.peek().type = TokenType.nounphrase;
-                toks.next();
-            }
-            
-            while(toks.peek().type != TokenType.EOS && toks.peek().type != TokenType.article && toks.peek().type != TokenType.adjective){
-                verbPhrase += " " + toks.peek().body;
-                toks.deleteThis();
-                toks.next();
-            }
-            toks.addToken(new Token(TokenType.verbphrase, verbPhrase));
-            
-            while(toks.peek().type != TokenType.EOS && toks.peek().type != TokenType.article && toks.peek().type != TokenType.adjective){
-                adjectivePhrase += " " + toks.peek().body;
-                toks.deleteThis();
-                toks.next();
-            }
-            toks.addToken(new Token(TokenType.adjectivephrase, adjectivePhrase));
-            
+             System.out.println(toks.peek() + "   (" + toks.peek().type + ")");
             toks.next();
+            }
+        
+        if(toks.peek().type == TokenType.adverb ||toks.peek().type == TokenType.verb || toks.peek().type == TokenType.preposition){
+            verbPhrase +=  toks.peek().body;
+            toks.deleteThis();
             
+            while(toks.away(1) != Token.EOF  && toks.away(1).type == TokenType.verb ){
+                verbPhrase += " " + toks.peek().body;
+                //System.out.println(verbPhrase);
+                toks.deleteThis();
+                
+            }
+            toks.peek().body = verbPhrase + " " +toks.peek().body;
+            toks.peek().type = TokenType.verbphrase;
+            System.out.println(toks.peek() + "   (" + toks.peek().type + ")");
+        }
+//        
+            toks.next();
             return parse(toks) ; 
         
         
