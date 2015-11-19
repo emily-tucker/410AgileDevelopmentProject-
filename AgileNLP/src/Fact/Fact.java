@@ -30,8 +30,9 @@ public class Fact {
         types[2] = n2.type;
 
     }
-
-    public void setQuery() {
+    
+    public void setQuery()
+    {
         //Fill the unknown using the MS (Movie Searcher Function)
         //This is used by Tokens to Question
     }
@@ -83,23 +84,29 @@ public class Fact {
     }
 
     public Fact matchQuerey(Fact[] pool) { //Changed a little bit from the Wiki, now returns the matched Fact instead of a boolean from a matched fact
-        if (this.bodies[0] == "?") {
+        if (this.bodies[2].equals("?")) {
             for (Fact x : pool) {
-
-                if (this.types[0] == x.types[0] && this.bodies[1] == x.bodies[1] && this.bodies[2] == (x.bodies[2])) {
+                System.out.println(x);
+                System.out.println(this);
+                if (this.types[2]==x.types[2]){
+                    System.out.println("Type match.");
+                    if(this.bodies[0].equals(x.bodies[0])){
+                        System.out.println("Body 1 match.");
+                        if(this.bodies[1].equals((x.bodies[1]))){
+                            System.out.println("Body 2 match: Full match.");
+                            return x;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (Fact x : pool) {
+                if (this.bodies[0].equals(x.bodies[0]) && this.bodies[1].equals(x.bodies[1]) && this.bodies[2].equals(x.bodies[2])) {
                     return x;
-                }else{
-              for(Fact f:pool){
-                 if (this.types[0] != f.types[0] && this.bodies[1] == f.bodies[1] && this.bodies[2] == (f.bodies[2])) {
-                    return x;
-                 }
-            
-        } 
-             
                 }
             }
         }
-
+        System.out.println("Could not find matching fact.");
         return null;
     }
 }

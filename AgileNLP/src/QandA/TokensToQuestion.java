@@ -13,8 +13,7 @@ import Token.*;
  *
  * @author stu852511 SO WHAT WE DONE HERE. Is we made a class that doesn't have
  * a constructor, that is private, and a main method. A bit like Tokenizer. It
- * takes a stream of tokens (a sentence), and then tries to process what kind of
- * question is being asked. It returns a FACT, which will be passed in to the
+ * takes a stream of tokens (a sentence), and then tries to process  to the
  * query dudes. This will not be plugged into the UI. Anyway. This looks at the
  * structure of a question. Like, if it's a who, what, where, when question.
  * Obviously we can't answer every question- WHY questions are right out. As are
@@ -34,18 +33,21 @@ public class TokensToQuestion {
         //System.out.println(nextToken);
         //System.out.println("STARTING ANALISYS");
         
-        Fact[] pool = new Fact[5];
-        Token[] words = new Token[10];
-        words[0] = new Token(TokenType.propernoun, "Yoda");
-        words[1] = new Token(TokenType.verb, "is");
-        words[2] = new Token(TokenType.adjective, "green");
-        words[3] = new Token(TokenType.noun, "jedi");
-        words[4] = new Token(TokenType.verb, "on");
-        words[5] = new Token(TokenType.propernoun, "Dagobah");
-        pool[0] = new Fact(words[0],words[1],words[2]);
-        pool[1] = new Fact(words[0],words[1],words[3]);
-        pool[2] = new Fact(words[0],words[4],words[5]);
-        
+//       Wha
+         Token yoda = new Token(TokenType.noun, "Yoda");
+        Token is = new Token(TokenType.verb, "is");
+        Token in = new Token(TokenType.verb, "in");
+        Token Q = new Token(TokenType.adjective, "?");
+        Token green = new Token(TokenType.adjective, "green");
+        Token jedi = new Token(TokenType.noun, "jedi");
+        Token starWars = new Token(TokenType.noun, "Star Wars");
+        Token iJ = new Token(TokenType.noun, "Indiana Jones");
+       
+        Fact pool2 = new Fact(starWars, in, yoda);
+        Fact pool3 = new Fact(green, is, yoda);
+        Fact pool4 = new Fact(jedi, is, yoda);
+        Fact query = new Fact(Q, is, yoda);
+        Fact[] pool = {pool2,pool4,pool3};
         
         Fact returnFact = null;
         if (Tokenizer.isWhWord(currentToken)) {
@@ -111,13 +113,12 @@ public class TokensToQuestion {
             returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
         }
         if (returnFact == null) { //Failure clause. If nothing was found, the fact is still NULL.
-            System.out.println("WE FOUND A FAILURE. IT WAS ME.");
-            TokenStream returnStream = new TokenStream(); //Failure clause.
-            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-            returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
+            System.out.println("No question words recognized. Maybe it's a fact?");
+            stream.next();
+            returnFact = new Fact(stream.next(), stream.next(), stream.next());
         }
+        System.out.println(returnFact.types[0]);
+        System.out.println(returnFact);
         return returnFact.matchQuerey(pool);
     }
 
