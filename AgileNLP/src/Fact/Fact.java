@@ -30,9 +30,8 @@ public class Fact {
         types[2] = n2.type;
 
     }
-    
-    public void setQuery()
-    {
+
+    public void setQuery() {
         //Fill the unknown using the MS (Movie Searcher Function)
         //This is used by Tokens to Question
     }
@@ -84,22 +83,23 @@ public class Fact {
     }
 
     public Fact matchQuerey(Fact[] pool) { //Changed a little bit from the Wiki, now returns the matched Fact instead of a boolean from a matched fact
-        if (this.types[2] == TokenType.unknown) {
+        if (this.bodies[0] == "?") {
             for (Fact x : pool) {
 
-                if (this.bodies[0] == x.bodies[0] && this.bodies[1] == (x.bodies[1])) {
+                if (this.types[0] == x.types[0] && this.bodies[1] == x.bodies[1] && this.bodies[2] == (x.bodies[2])) {
                     return x;
-                }
-            }
-        } else {
-            for (Fact x : pool) {
-                if (this.bodies[0] == x.bodies[0] && this.bodies[1] == x.bodies[1] && this.bodies[2] == x.bodies[2]) {
+                }else{
+              for(Fact f:pool){
+                 if (this.types[0] != f.types[0] && this.bodies[1] == f.bodies[1] && this.bodies[2] == (f.bodies[2])) {
                     return x;
+                 }
+            
+        } 
+             
                 }
             }
         }
 
         return null;
     }
-
 }
