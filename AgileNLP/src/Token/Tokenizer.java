@@ -87,7 +87,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isAdverb(String s){
-        String articles = "not up so out just now how then more also here well only very even back there down still as never when";
+        String articles = "can not up so out just now how then more also here well only very even back there down still as never when";
         String [] words = articles.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -328,7 +328,7 @@ public static TokenStream lexer(String question){
                         char tmp;
                         while (col < line.length() &&
                                (Character.isLetter(tmp = line.charAt(col)) 
-                                || Character.isDigit(tmp) || tmp == '-'   ||((Character.isUpperCase(line.charAt(col-1)) && tmp == '.') )) ) {
+                                || Character.isDigit(tmp) || tmp == '-' || tmp == '\''  ||((Character.isUpperCase(line.charAt(col-1)) && tmp == '.') )) ) {
                                   word = word + tmp;
                                   col++;
                         }
@@ -397,6 +397,10 @@ public static TokenStream lexer(String question){
             toks.here = 0;
             return toks;
         }
+        //mark end of sentence
+        if(toks.peek().type == TokenType.punctuation && toks.peek().body.equals(".")){
+            toks.peek().type = TokenType.EOS;
+        }
         //two consecutive propernouns makes one propernoun
         if(toks.peek().type == TokenType.propernoun && toks.away(1).type == TokenType.propernoun){
             toks.peek().body +=  " " + toks.away(1).body;
@@ -454,6 +458,7 @@ public static TokenStream lexer(String question){
             if (toks.away(1).type == TokenType.preposition) {
                 toks.peek().type = TokenType.verb;
             }
+            
         }
         if (toks.peek().type == TokenType.unknown) {
             if (toks.away(-1).type == TokenType.preposition) {
@@ -462,6 +467,10 @@ public static TokenStream lexer(String question){
                 }
                 if(toks.away(1).type == TokenType.punctuation || toks.away(1).type == TokenType.EOS || toks.away(1).type == TokenType.conjunction){
                     toks.peek().type = TokenType.noun;
+                }
+                if(toks.away(1).type == TokenType.unknown){
+                    toks.peek().type = TokenType.adjective;
+                    toks.away(1).type = TokenType.noun;
                 }
             }
         }
