@@ -14,9 +14,8 @@ import Token.*;
  * @author stu852511 SO WHAT WE DONE HERE. Is we made a class that doesn't have
  * a constructor, that is private, and a main method. A bit like Tokenizer. It
  * takes a stream of tokens (a sentence), and then tries to process what kind of
- * question is being asked. It returns a FACT, which will be passed in to the query dudes.
- * This will not be plugged into the UI.
- * Anyway. This looks at the
+ * question is being asked. It returns a FACT, which will be passed in to the
+ * query dudes. This will not be plugged into the UI. Anyway. This looks at the
  * structure of a question. Like, if it's a who, what, where, when question.
  * Obviously we can't answer every question- WHY questions are right out. As are
  * oddly-worded ones. In the future, we'll be able to recognize questions that
@@ -34,6 +33,21 @@ public class TokensToQuestion {
         //System.out.println(currentToken);
         //System.out.println(nextToken);
         //System.out.println("STARTING ANALISYS");
+        
+        Fact[] pool = new Fact[5];
+        Token[] words = new Token[10];
+        words[0] = new Token(TokenType.propernoun, "Yoda");
+        words[1] = new Token(TokenType.verb, "is");
+        words[2] = new Token(TokenType.adjective, "green");
+        words[3] = new Token(TokenType.noun, "jedi");
+        words[4] = new Token(TokenType.verb, "on");
+        words[5] = new Token(TokenType.propernoun, "Dagobah");
+        pool[0] = new Fact(words[0],words[1],words[2]);
+        pool[1] = new Fact(words[0],words[1],words[3]);
+        pool[2] = new Fact(words[0],words[4],words[5]);
+        
+        
+        Fact returnFact = null;
         if (Tokenizer.isWhWord(currentToken)) {
             //System.out.println("Okay, so it's a WH-word.");
             if (currentToken.equalsIgnoreCase("who")) {
@@ -48,38 +62,36 @@ public class TokensToQuestion {
                     //System.out.println(returnStream.away(1));
                     //System.out.println(returnStream.away(2));
                     nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-                    Fact returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
-                    return returnFact;
-                    
+                    returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
                 }
             } else if (currentToken.equalsIgnoreCase("what")) { //Similar to Who, but we return a noun of some kind. Not a proper noun, a regular one.
                 //System.out.println("WE FOUND A 'WHAT'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream();
-                    returnStream.addToken(new Token(TokenType.noun, "?"));
+                    returnStream.addToken(new Token(TokenType.adjective, "?")); //Or adjective, whatever.
                     returnStream.addToken(nextToken);
                     nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-                    Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-                    return returnFact;
+                    returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
+
                 }
             } else if (currentToken.equalsIgnoreCase("where")) { //Similar to Who, except with a 'place' as the return type.
                 //System.out.println("WE FOUND A 'WHERE'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream();
-                    returnStream.addToken(new Token(TokenType.propernoun, "unknown")); //Places are proper nouns, technically. If there's more functionality later, we'll add that in. For now it's just a proper noun.
+                    returnStream.addToken(new Token(TokenType.propernoun, "?")); //Places are proper nouns, technically. If there's more functionality later, we'll add that in. For now it's just a proper noun.
                     returnStream.addToken(nextToken); //Then we add in the verb we just found.
                     nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-                    Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-                    return returnFact;
+                    returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
                 }
             } else if (currentToken.equalsIgnoreCase("when")) {
                 //System.out.println("WE FOUND A 'WHEN'");
                 if (nextToken.type == TokenType.verb) {
                     TokenStream returnStream = new TokenStream(); //This is very similar to the Who question, except that it can only return a movie's release date, or date information.
                     returnStream.addToken(new Token(TokenType.number, "?")); //It's gotta be a number.
+                    returnStream.addToken(nextToken); //Then we add in the verb we just found.
                     nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-                    Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-                    return returnFact;
+                    returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
+
                 }
             } else if (currentToken.equalsIgnoreCase("why")) {
                 //System.out.println("WE FOUND A 'WHY'");
@@ -88,8 +100,7 @@ public class TokensToQuestion {
                 returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
                 returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
                 returnStream.addToken(new Token(TokenType.unknown, "NOPE"));//WE NEED THREE OKAY
-                Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-                return returnFact;
+                returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
             }
         } else if (Tokenizer.isVerb(currentToken)) { //THIS ONE DOESN'T WORK YET
             //System.out.println("WE FOUND A VERB");
@@ -97,17 +108,17 @@ public class TokensToQuestion {
             //THERE IS NO YES/NO, WE JUST FEED IT A COMPLETE FACT AND HOPE THAT IT MATCHES SOMETHING.
             returnStream.addToken(new Token(currentToken)); //We add in the verb we just found.
             nounStripper(stream, returnStream); //Run it through our custom-made noun extractor...
-            Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-            return returnFact;
+            returnFact = new Fact(returnStream.next(), returnStream.next(), returnStream.next());
         }
-        
-        System.out.println("WE FOUND A FAILURE. IT WAS ME.");
-        TokenStream returnStream = new TokenStream(); //Failure clause.
-        returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-        returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-        returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
-        Fact returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
-        return returnFact;
+        if (returnFact == null) { //Failure clause. If nothing was found, the fact is still NULL.
+            System.out.println("WE FOUND A FAILURE. IT WAS ME.");
+            TokenStream returnStream = new TokenStream(); //Failure clause.
+            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
+            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
+            returnStream.addToken(new Token(TokenType.unknown, "NOPE"));
+            returnFact = new Fact(returnStream.peek(), returnStream.next(), returnStream.next());
+        }
+        return returnFact.matchQuerey(pool);
     }
 
     public static void nounStripper(TokenStream inStream, TokenStream outStream) {
