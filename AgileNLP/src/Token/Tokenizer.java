@@ -87,7 +87,7 @@ public class Tokenizer {
         return false;
     }
     public static boolean isAdverb(String s){
-        String articles = "not up so out just now how then more also here well only very even back there down still as never";
+        String articles = "not up so out just now how then more also here well only very even back there down still as never when";
         String [] words = articles.split(" ");
         
         for(int i = 0; i < words.length; i ++){
@@ -301,28 +301,34 @@ public static TokenStream lexer(String question){
                     char ch = line.charAt(col);
                     if (Character.isWhitespace(ch)) {
                         col++;
-                    }else if(isPunctuation(String.valueOf(ch))&& ch == '.'){
-                        
-                        toks.addToken(new Token(TokenType.EOS, String.valueOf(ch)));
-                        isFirstWord = true;
+                    }else if (ch == '&') {
+                        toks.addToken(new Token(TokenType.conjunction, String.valueOf(ch)));
                         col++;
+                    }else if (Character.isDigit(ch)) {
+                        String tok = new String();
+                        tok = tok + ch;
+                        col++;
+                        while (col < line.length() &&
+                                Character.isDigit(line.charAt(col)) || line.charAt(col) == '.' ) {
+                                  tok = tok + line.charAt(col);
+                                  col++;
+                        }
+                        toks.addToken(new Token(TokenType.number, tok));
                         
-                    }else if(isPunctuation(String.valueOf(ch))){
+                    } else if(isPunctuation(String.valueOf(ch))){
                         
                         toks.addToken(new Token(TokenType.punctuation, String.valueOf(ch)));
                         col++;
                         
-                    }else if (ch == '&') {
-                        toks.addToken(new Token(TokenType.conjunction, String.valueOf(ch)));
-                        col++;
-                    }else if (Character.isLetter(ch) ) {
+                    }
+                    else if (Character.isLetter(ch) ) {
                         String word = new String();
                         word = word + ch;
                         col++;
                         char tmp;
                         while (col < line.length() &&
-                               (Character.isLetter(tmp = line.charAt(col))
-                                || Character.isDigit(tmp) || tmp == '-') ) {
+                               (Character.isLetter(tmp = line.charAt(col)) 
+                                || Character.isDigit(tmp) || tmp == '-'   ||((Character.isUpperCase(line.charAt(col-1)) && tmp == '.') )) ) {
                                   word = word + tmp;
                                   col++;
                         }
@@ -354,27 +360,22 @@ public static TokenStream lexer(String question){
                 else if(isPreposition(word)){
                     toks.addToken(new Token(TokenType.preposition, word));
                 }
+                else if(isPunctuation(String.valueOf(ch))&& ch == '.'){
+                        
+                        toks.addToken(new Token(TokenType.EOS, String.valueOf(ch)));
+                        isFirstWord = true;
+                        col++;
+                        
+                    }else if (punct.contains(Character.toString(ch))) {
+                        toks.addToken(new Token(TokenType.punctuation, Character.toString(ch)));
+                        col++;
+                    }
                 
                 else{
                     toks.addToken(new Token(TokenType.unknown, word));
                 }
                 isFirstWord = false;
-                    } else if (Character.isDigit(ch)) {
-                        String tok = new String();
-                        tok = tok + ch;
-                        col++;
-                        while (col < line.length() &&
-                                Character.isDigit(line.charAt(col))) {
-                                  tok = tok + line.charAt(col);
-                                  col++;
-                        }
-                        toks.addToken(new Token(TokenType.number, tok));
-                        
-                    } else if (punct.contains(Character.toString(ch))) {
-                        toks.addToken(new Token(TokenType.punctuation, Character.toString(ch)));
-                        if(ch=='.'){isFirstWord = true;}
-                        col++;
-                    } else {
+                    }  else {
                         System.out.print("Invalid character " + ch + " in " + line);
                         errs++;
                         col++;
@@ -407,6 +408,7 @@ public static TokenStream lexer(String question){
             toks.peek().type = TokenType.adjective;
         
         }
+        
         //if this is the first word
         if(toks.away(-1).type == TokenType.EOS){
             
@@ -419,67 +421,89 @@ public static TokenStream lexer(String question){
         
         }
         //find a token of an unknow type
-        if(toks.peek().type == TokenType.unknown){
-            
+        if (toks.peek().type == TokenType.unknown) {
+
             //if the token after the unknown is a propernoun, it is likely the unknown is a verb
             //this rule does not make a lot of sense
-            if(toks.away(1).type == TokenType.propernoun){
-                toks.peek().type = TokenType.adjective;
-            }
-            //if the token before 
-            if(toks.away(-1).type == TokenType.article){
-                if(toks.away(1).type == TokenType.unknown && toks.away(2).type == TokenType.unknown){
-                    toks.next().type = TokenType.adjective;
-                    toks.next().type = TokenType.adjective;
-                    toks.next().type = TokenType.noun;
-                }
-                if(toks.away(1).type == TokenType.unknown){
-                    toks.next().type = TokenType.adjective;
-                    toks.next().type = TokenType.noun;
-                }
-                else{toks.next().type = TokenType.noun;}
-            }
-            
-            if(toks.away(-1).type == TokenType.adverb){
-                toks.next().type = TokenType.verb;
-            }
-            
-            if(toks.away(1).type == TokenType.preposition){
-                toks.next().type = TokenType.verb;
-            }
-            if(toks.away(-1).type == TokenType.preposition){
-                if(toks.away(1).type == TokenType.pronoun){
-                    toks.next().type = TokenType.verb;
-                }
-            }
-            if(toks.away(-1).type == TokenType.pronoun){
-                if(toks.away(1).type == TokenType.pronoun){
-                    toks.next().type = TokenType.verb;
-                }
-            }
-            if(toks.away(-1).type == TokenType.adjective){
-                toks.next().type = TokenType.noun;
-            }
-            
-//            if(toks.away(-1).type == TokenType.noun){
-//                toks.next().type = TokenType.verb;
-//            }
-        }
-        if(toks.peek().type == TokenType.conjunction){
-            if(toks.away(-1).type == TokenType.verb && toks.away(1).type == TokenType.unknown){
-                toks.next();
+            if ((toks.away(1).type == TokenType.noun || toks.away(1).type == TokenType.propernoun) && (toks.away(-1).type == TokenType.propernoun || toks.away(-1).type == TokenType.noun)) {
                 toks.peek().type = TokenType.verb;
             }
-            if(toks.away(-1).type == TokenType.noun && toks.away(1).type == TokenType.unknown){
-                toks.next();
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            //if the token before 
+            if (toks.away(-1).type == TokenType.article) {
+                if (toks.away(1).type == TokenType.unknown && toks.away(2).type == TokenType.unknown) {
+                    toks.next().type = TokenType.adjective;
+                    toks.next().type = TokenType.adjective;
+                    toks.peek().type = TokenType.noun;
+                }
+                else if (toks.away(1).type == TokenType.unknown) {
+                    toks.next().type = TokenType.adjective;
+                    toks.peek().type = TokenType.noun;
+                } else {
+                    toks.peek().type = TokenType.noun;
+                }
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.adverb) {
+                toks.peek().type = TokenType.verb;
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(1).type == TokenType.preposition) {
+                toks.peek().type = TokenType.verb;
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.preposition) {
+                if (toks.away(1).type == TokenType.pronoun) {
+                    toks.peek().type = TokenType.verb;
+                }
+                if(toks.away(1).type == TokenType.punctuation || toks.away(1).type == TokenType.EOS || toks.away(1).type == TokenType.conjunction){
+                    toks.peek().type = TokenType.noun;
+                }
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.pronoun) {
+                if (toks.away(1).type == TokenType.pronoun) {
+                    toks.peek().type = TokenType.verb;
+                }
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.adjective) {
                 toks.peek().type = TokenType.noun;
             }
-            
-         } 
-        if(toks.peek().type == TokenType.preposition && (toks.away(1).type == TokenType.unknown || toks.away(2).type == TokenType.unknown )){
-                if(toks.away(1).type != TokenType.unknown){
-                    toks.away(2).type = TokenType.noun;
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.propernoun) {
+                toks.peek().type = TokenType.noun;
+            }
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if (toks.away(-1).type == TokenType.conjunction) {
+                if (toks.away(-2).type == TokenType.verb) {
+                    toks.peek().type = TokenType.verb;
                 }
+                if (toks.away(-2).type == TokenType.noun && toks.away(1).type != TokenType.preposition) {
+
+                    toks.peek().type = TokenType.noun;
+                }
+                if (toks.away(-2).type == TokenType.noun && (toks.away(1).type == TokenType.preposition || toks.away(1).type == TokenType.article)) {
+                    toks.peek().type = TokenType.verb;
+                }
+
+            }
+
+        }
+        if (toks.peek().type == TokenType.unknown) {
+            if(toks.peek().type == TokenType.preposition && (toks.away(1).type == TokenType.unknown || toks.away(2).type == TokenType.unknown )){
+                    if(toks.away(1).type != TokenType.unknown){
+                        toks.away(2).type = TokenType.noun;
+                    }
+            }
         }
         
         toks.next();

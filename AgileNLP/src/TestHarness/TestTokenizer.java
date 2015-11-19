@@ -26,7 +26,7 @@ public class TestTokenizer {
             TokenStream toks = Tokenizer.tokenizePlot(question);
             toks = Tokenizer.tagger(toks);
             //Facts database = FactBuilder.glean(toks);
-            toks = Tokenizer.parse(toks);
+            //toks = Tokenizer.parse(toks);
             
             System.out.println("");
             System.out.println("Here is the token stream: ");
