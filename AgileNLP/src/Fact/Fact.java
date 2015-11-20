@@ -109,4 +109,31 @@ public class Fact {
         System.out.println("Could not find matching fact.");
         return null;
     }
+    
+    public Fact matchNouns(Fact[] pool) { //Changed a little bit from the Wiki, now returns the matched Fact instead of a boolean from a matched fact
+
+        for (Fact x : pool) {
+
+            if (this.types[0] == this.types[0] && this.types[2] == x.types[2]) {  //Matches types in fact object, which is Noun Verb Noun, dropping the verb. If query has matching noun types moves forward
+                if (this.bodies[0].equalsIgnoreCase(x.bodies[0]) && this.bodies[1].equalsIgnoreCase(bodies[1]) && this.bodies[2].equalsIgnoreCase(x.bodies[2])) {
+                    System.out.println(x);
+                    //If all three parts of bodies match spit it back out.
+
+                }
+                if (this.bodies[0].equalsIgnoreCase(bodies[0]) && this.bodies[2].equalsIgnoreCase(bodies[2]) || this.bodies[0].equalsIgnoreCase(bodies[2]) && this.bodies[2].equalsIgnoreCase(bodies[0])) {
+                    System.out.println("Matched or Swapped Nouns"); //test showing why its being printed. 
+                    System.out.println(x);
+                    /*If statement checks noun1, drops verb, checks noun3. If they're the same then state the fact as is. If they're switched, return that fact in addition because it is probably relevent.
+                    I call this logic the Kevin Bacon game style fact search. Connects nouns not included in the initial query (Jedi, Yoda, Luke, Dagoba...) 
+                    like the Kevin Bacon game, where 7 connections between actor/actress and films can always lead back to films with Kevin Bacon*/
+
+                }
+            }
+        }
+
+        return null;
+
+    }
+    
+    
 }

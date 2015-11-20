@@ -25,15 +25,23 @@ public class Tester {
         Token jedi = new Token(TokenType.noun, "jedi");
         Token starWars = new Token(TokenType.noun, "Star Wars");
         Token iJ = new Token(TokenType.noun, "Indiana Jones");
-       
+        Token prof = new Token(TokenType.noun, "professor");
+        Token dagoba = new Token(TokenType.noun, "Dagoba");
         Fact pool2 = new Fact(starWars, in, yoda);
         Fact pool3 = new Fact(green, is, yoda);
         Fact pool4 = new Fact(jedi, is, yoda);
-        Fact query = new Fact(Q, is, yoda);
-        Fact[] pool = {pool2,pool4,pool3};
+        Fact pool5 = new Fact(iJ, is, in);
+        Fact pool6 = new Fact(jedi, is, yoda);
+        Fact pool7 = new Fact(jedi, in, starWars);
+        Fact pool8 = new Fact(dagoba, is, starWars);
+        Fact pool9 = new Fact(iJ, is, prof);
+        Fact query = new Fact(yoda, in, jedi);
         
+        
+        Fact[] pool = {pool2, pool3, pool4, pool5, pool6, pool7, pool8, pool9};
+
         System.out.println(query);
-        System.out.println(query.matchQuerey(pool));
+        System.out.println(query.matchNouns(pool));
 
     }
 }
