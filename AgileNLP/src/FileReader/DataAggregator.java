@@ -9,6 +9,8 @@
 
 package FileReader;
 
+import Error.HandleError;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Set;
@@ -48,72 +50,109 @@ public class DataAggregator {
     @SuppressWarnings("unchecked")
     public static Hashtable GetCompositeMovies() {
 
-        System.out.println("Starting Data Aggregator: " + new Date());
+        try
+        {
+            System.out.println("Starting Data Aggregator: " + new Date());
 
-        //get movies
-        Hashtable<Integer, Movie> movies = (Hashtable<Integer, Movie>) DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.movie);
-        System.out.println("Loaded Movies Hashtable: " + new Date());
+            //get movies
+            Hashtable<Integer, Movie> movies = (Hashtable<Integer, Movie>) DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.movie);
+            System.out.println("Loaded Movies Hashtable: " + new Date());
 
-        //get plot summaries
-        Hashtable<Integer, PlotSummary> plot_summaries = (Hashtable<Integer, PlotSummary>) DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.plot_summary);
-        System.out.println("Loaded Plot Summaries: " + new Date());
+            //get plot summaries
+            Hashtable<Integer, PlotSummary> plot_summaries = (Hashtable<Integer, PlotSummary>) DataLoader.GetObjectData(DataLoader.DataType.hash_table, DataLoader.ObjectType.plot_summary);
+            System.out.println("Loaded Plot Summaries: " + new Date());
 
-        Hashtable<Integer, MovieComposite> composite_movies = new Hashtable<>();
+            Hashtable<Integer, MovieComposite> composite_movies = new Hashtable<>();
 
-        //get character loader
-        CharacterLoader cl = DataLoader.GetCharacterLoader();
-        System.out.println("Loaded Character Loader: " + new Date());
+            //get character loader
+            CharacterLoader cl = DataLoader.GetCharacterLoader();
+            System.out.println("Loaded Character Loader: " + new Date());
 
-        Set<Integer> movie_keys = movies.keySet();  // movie key set  
-        Set<String> character_keys; // character key set
+            Set<Integer> movie_keys = movies.keySet();  // movie key set  
+            Set<String> character_keys; // character key set
 
-        movie_keys.stream().forEach((movie_key) -> {
-            MovieComposite mc = new MovieComposite();
+            movie_keys.stream().forEach((movie_key) -> {
+                MovieComposite mc = new MovieComposite();
 
-            Movie m = (Movie) movies.get(movie_key);
-            mc.movie = m;   // Assigns the movie object
+                Movie m = (Movie) movies.get(movie_key);
+                mc.movie = m;   // Assigns the movie object
 
-            // This block will assign the plot summary portion
-            if (plot_summaries.containsKey(m.wikipedia_movie_id)) {
-                PlotSummary ps = (PlotSummary) plot_summaries.get(m.wikipedia_movie_id);
-                if (ps != null) {
-                    mc.plot_summary = ps;
+                // This block will assign the plot summary portion
+                if (plot_summaries.containsKey(m.wikipedia_movie_id)) {
+                    PlotSummary ps = (PlotSummary) plot_summaries.get(m.wikipedia_movie_id);
+                    if (ps != null) {
+                        mc.plot_summary = ps;
+                    }
                 }
-            }
 
-            composite_movies.put(movie_key, mc);
-        });
-        System.out.println("Completed Composite Movie Movie and Plot Summary Assignment: " + new Date());
+                composite_movies.put(movie_key, mc);
+            });
+            System.out.println("Completed Composite Movie Movie and Plot Summary Assignment: " + new Date());
 
-        //loop over all the characters
-        //determine if movie exists in our movie array
-        //if so, go ahead and add into composite movies
-        //get all the characters for the movie and put into an array list
-        //loop over all characters array
-        //do we have the movie in movie hashtable
-        //get character object out of character hashtable
-        //add to movie charachters array
-        // This loop adds all the characters of a movie into an object to group them
-        cl.CharactersArrayList.stream().forEach((c) -> {
-            MovieComposite mc1 = (MovieComposite) composite_movies.get(c.wikipedia_movie_id);
+            //loop over all the characters
+            //determine if movie exists in our movie array
+            //if so, go ahead and add into composite movies
+            //get all the characters for the movie and put into an array list
+            //loop over all characters array
+            //do we have the movie in movie hashtable
+            //get character object out of character hashtable
+            //add to movie charachters array
+            // This loop adds all the characters of a movie into an object to group them
+            cl.CharactersArrayList.stream().forEach((c) -> {
+                MovieComposite mc1 = (MovieComposite) composite_movies.get(c.wikipedia_movie_id);
 
-            if (mc1 != null) {
+                if (mc1 != null) {
 
-                mc1.characters.add(c);
-            }
+                    mc1.characters.add(c);
+                }
 
-            //Boolean b = composite_movies.containsValue(c.wikipedia_movie_id);
-            //if(b)
-            //{
-            //    Character c1 = (Character)cl.CharactersHashtable.get(c.freebase_character_id);
-            //    cl.CharactersArrayList.add(c1);
-            //}
-            if (mc1 != null) {
-                mc1.characters.add(c);
-            }
-        });
-        System.out.println("Completed Composite Movie Character Assignment: " + new Date());
+                //Boolean b = composite_movies.containsValue(c.wikipedia_movie_id);
+                //if(b)
+                //{
+                //    Character c1 = (Character)cl.CharactersHashtable.get(c.freebase_character_id);
+                //    cl.CharactersArrayList.add(c1);
+                //}
+                if (mc1 != null) {
+                    mc1.characters.add(c);
+                }
+            });
+            System.out.println("Completed Composite Movie Character Assignment: " + new Date());
 
-        return composite_movies;
+            
+            //lets loop over movies again now and create character facts
+            Set<Integer> composite_movie_keys = composite_movies.keySet();  // movie key set  
+
+            composite_movie_keys.stream().forEach((composite_movie_key) -> {
+                MovieComposite cm1 = (MovieComposite)composite_movies.get(composite_movie_key);
+                ArrayList f = FactExtractor.MovieActorFactExtractor.CompileActorMovieFacts(cm1.movie, cm1.characters);
+
+                if(f.size() > 0)
+                {
+                    cm1.facts.addAll(f);
+                }
+                
+            });
+            System.out.println("Completed Movie Character Fact Assignment: " + new Date());
+
+
+            //TO DO
+            //get plot summary string
+            //retrieve fact array list
+            //append to cm1.facts.addAll(fact_array_list)
+            System.out.println("Completed Movie Plot Summary Fact Assignment: " + new Date());
+            
+            
+            return composite_movies;
+        
+
+
+        
+        }
+
+        catch (Exception ex)
+        {
+            HandleError.HandleError(ex);
+            return new Hashtable();
+        }
     }
 }

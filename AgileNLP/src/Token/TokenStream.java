@@ -60,10 +60,26 @@ public class TokenStream {
     * This is NON-Destructive
     * **************************************************************************
     */  
-        public Token peek() {
+    public Token peek() {
         if (here < size) {
             return tokens.get(here);}
         else return Token.EOF;
+    }
+     
+    public Token away(int i) {
+        if (here + i < size && here + i > 0) {
+            return tokens.get(here + i);}
+        else return Token.EOF;
+    }
+    
+    public void deleteThis(){
+        if (here < size) {
+            //System.out.println("deleted");
+            tokens.remove(here);
+            
+            size--;
+        }
+        else System.out.println("here is greater than size");
     }
     
 }
